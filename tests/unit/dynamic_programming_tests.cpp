@@ -110,7 +110,7 @@ TEST(KnapsackTests, RejectsInvalidInputsAndProtectsValueAndTableOverflow) {
 TEST(MatrixChainTests, FindsMinimumCostAndOptimalParenthesization) {
     const MatrixChainResult classic = matrixChainMultiplication({10, 30, 5, 60});
     EXPECT_EQ(classic.minimumCost, 4500);
-    EXPECT_EQ(classic.parenthesization, "(A1 x (A2 x A3))");
+    EXPECT_EQ(classic.parenthesization, "((A1 x A2) x A3)");
 
     const MatrixChainResult longer =
         matrixChainMultiplication({40, 20, 30, 10, 30});
