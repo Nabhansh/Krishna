@@ -139,20 +139,34 @@ Verified baseline at commit `913467c`:
 - All 80 GoogleTests passed.
 - The backtracking example ran successfully.
 
-## Branch and bound — implementation added; verification blocked
+## Branch and bound — verified
 
-Added FIFO and LIFO Branch and Bound for the shared 0/1 Knapsack equipment
-model, AirportOperations entry points, eight focused GoogleTests including
-small-instance checks against the DP Knapsack solver, `branch_bound_example`,
-and complexity/recurrence/airport-use documentation.
+Verified FIFO, LIFO, and Least-Cost Branch and Bound for the shared 0/1
+Knapsack equipment-allocation problem. The three strategies passed comparison
+tests against each other and the existing dynamic-programming Knapsack
+implementation. Their AirportOperations integrations and airport equipment
+examples were verified.
 
-Verification attempt:
+## Bounded Travelling Salesperson — verified
 
-- Debug CMake configuration succeeded.
-- The clean build failed before project sources compiled because GCC 16's
-  configured system headers reference unavailable `bits/wordsize.h`.
-- CTest could not run because the clean build did not produce the test binary;
-  the example executable is likewise unavailable.
-- The 23/34 algorithms and 80/80 passing tests above remain the latest
-  verified baseline. The two branch-and-bound implementations and eight new
-  tests are authored but unverified; no commit or push was made.
+Verified the bounded Travelling Salesperson implementation using Held-Karp
+subset dynamic programming. It reconstructs a minimum-cost airport inspection
+tour, supports directed/asymmetric route costs, and explicitly represents
+missing routes. Its AirportOperations integration and runnable example were
+verified.
+
+## Latest verified development state
+
+- 27 of 34 mandatory algorithms implemented and verified.
+- All 101 GoogleTests passed, including airport integration tests.
+- FIFO, LIFO, and Least-Cost Branch and Bound verified.
+- Bounded Travelling Salesperson using Held-Karp dynamic programming verified.
+- Both new examples executed successfully.
+- Current branch: `milestone-3-divide-greedy`.
+- Latest commit before this batch: `047cef0`.
+
+## Remaining algorithms — not verified
+
+The remaining 7 of 34 mandatory algorithms are not included in the verified
+set above. This status does not claim that all mandatory algorithms or the
+entire product are complete.

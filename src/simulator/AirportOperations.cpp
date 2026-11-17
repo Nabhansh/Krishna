@@ -117,4 +117,22 @@ algorithms::BranchBoundKnapsackResult AirportOperations::selectEquipmentLifoBran
     return algorithms::solveKnapsackLifoBranchAndBound(equipment, weightLimit);
 }
 
+algorithms::BranchBoundKnapsackResult AirportOperations::selectEquipmentLeastCostBranchAndBound(
+    const std::vector<algorithms::BranchBoundItem>& equipment,
+    std::int64_t weightLimit
+) {
+    return algorithms::solveKnapsackLeastCostBranchAndBound(equipment, weightLimit);
+}
+
+std::optional<algorithms::BoundedTravellingSalespersonResult>
+AirportOperations::planAirportInspectionTour(
+    const std::vector<std::vector<std::optional<std::int64_t>>>& travelCosts,
+    std::size_t startingLocation
+) {
+    return algorithms::solveBoundedTravellingSalesperson(
+        travelCosts,
+        startingLocation
+    );
+}
+
 } // namespace project31

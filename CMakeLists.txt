@@ -18,6 +18,7 @@ add_library(project31_core
     src/algorithms/BinarySearch.cpp
     src/algorithms/ActivitySelection.cpp
     src/algorithms/BellmanFord.cpp
+    src/algorithms/BoundedTravellingSalesperson.cpp
     src/algorithms/FifoBranchAndBound.cpp
     src/algorithms/CelebrityProblem.cpp
     src/algorithms/ClassicalMatrixMultiplication.cpp
@@ -27,6 +28,7 @@ add_library(project31_core
     src/algorithms/HuffmanCoding.cpp
     src/algorithms/IntervalPartitioning.cpp
     src/algorithms/LifoBranchAndBound.cpp
+    src/algorithms/LeastCostBranchAndBound.cpp
     src/algorithms/Knapsack.cpp
     src/algorithms/Kruskal.cpp
     src/algorithms/LongestCommonSubsequence.cpp
@@ -45,6 +47,20 @@ add_library(project31_core
 )
 target_include_directories(project31_core PUBLIC include)
 target_compile_options(project31_core PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(least_cost_branch_bound_example
+    examples/least_cost_branch_bound_example.cpp
+)
+target_link_libraries(least_cost_branch_bound_example PRIVATE project31_core)
+target_compile_options(least_cost_branch_bound_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(bounded_tsp_example examples/bounded_tsp_example.cpp)
+target_link_libraries(bounded_tsp_example PRIVATE project31_core)
+target_compile_options(bounded_tsp_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 
@@ -80,6 +96,8 @@ if(BUILD_TESTING)
         tests/unit/graph_algorithms_tests.cpp
         tests/unit/backtracking_tests.cpp
         tests/unit/branch_bound_tests.cpp
+        tests/unit/least_cost_branch_bound_tests.cpp
+        tests/unit/bounded_tsp_tests.cpp
         tests/integration/airport_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)

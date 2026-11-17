@@ -16,6 +16,8 @@
 #include "algorithms/backtracking/SubsetSum.hpp"
 #include "algorithms/branch_bound/FifoBranchAndBound.hpp"
 #include "algorithms/branch_bound/LifoBranchAndBound.hpp"
+#include "algorithms/branch_bound/LeastCostBranchAndBound.hpp"
+#include "algorithms/dynamic_programming/BoundedTravellingSalesperson.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -88,6 +90,15 @@ public:
     [[nodiscard]] static algorithms::BranchBoundKnapsackResult selectEquipmentLifoBranchAndBound(
         const std::vector<algorithms::BranchBoundItem>& equipment,
         std::int64_t weightLimit
+    );
+    [[nodiscard]] static algorithms::BranchBoundKnapsackResult selectEquipmentLeastCostBranchAndBound(
+        const std::vector<algorithms::BranchBoundItem>& equipment,
+        std::int64_t weightLimit
+    );
+    [[nodiscard]] static std::optional<algorithms::BoundedTravellingSalespersonResult>
+    planAirportInspectionTour(
+        const std::vector<std::vector<std::optional<std::int64_t>>>& travelCosts,
+        std::size_t startingLocation = 0
     );
 };
 

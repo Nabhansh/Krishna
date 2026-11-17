@@ -78,16 +78,22 @@ avoids overflow when quickly rejecting unreachable targets.
 |---|---|---:|---:|
 | FIFO Branch and Bound | Select valuable screening equipment with breadth-first live-node expansion | O(n 2^n) | O(n 2^n) |
 | LIFO Branch and Bound | Select valuable screening equipment with depth-first live-node expansion | O(n 2^n) | O(n^2) |
+| Least-Cost Branch and Bound | Select valuable screening equipment by best-first upper-bound priority | O(n 2^n) | O(n 2^n) |
 
-Both solvers use 0/1 Knapsack decisions and a fractional-knapsack relaxation
-as an admissible upper bound. Items are ordered deterministically by exact
-value-to-weight ratio and identifier; original indices are preserved in
-results. Each explored node computes an O(n) bound and carries an O(n) choice
-path. FIFO expands the oldest live node from a queue and may retain
+All three solvers use 0/1 Knapsack decisions and a fractional-knapsack
+relaxation as an admissible upper bound. Items are ordered deterministically
+by exact value-to-weight ratio and identifier; original indices are preserved
+in results. Each explored node computes an O(n) bound and carries an O(n)
+choice path. FIFO expands the oldest live node from a queue and may retain
 exponentially many such paths. LIFO expands the newest live node from a stack;
-its live frontier has at most O(n) nodes, each carrying an O(n) path. Both
-have exponential worst-case search and reject unrepresentable feasible value
-sums.
+its live frontier has at most O(n) nodes, each carrying an O(n) path.
+Least-Cost uses a priority queue ordered by descending upper bound, since this
+is a maximization problem; insertion order breaks equal-bound ties
+deterministically. Its best-first live frontier may also grow exponentially.
+All three have exponential worst-case search and reject unrepresentable
+feasible value sums. FIFO, LIFO, and Least-Cost can be compared on the same
+equipment records through `AirportOperations`; they return optimal values
+while their exploration order may produce different valid optimal selections.
 
 ## Divide and conquer algorithms
 
@@ -113,6 +119,7 @@ uses classical multiplication for small subproblems.
 | Matrix Chain Multiplication | Minimize scalar operations in an analytics matrix pipeline | O(n^3) | O(n^2) |
 | Longest Common Subsequence | Compare event and passenger-processing histories | O(mn) | O(mn) |
 | Optimal Binary Search Tree | Arrange operational record lookups by access probability | O(n^3) | O(n^2) |
+| Bounded Travelling Salesperson (Held-Karp) | Minimize a round trip through airport inspection locations | O(n^2 2^n) | O(n 2^n) |
 
 For Knapsack, `n` is the item count and `W` is the integer capacity. The DP
 table stores the best value using the first `i` items at capacity `c`; a
@@ -126,6 +133,17 @@ stores the minimum cost for a contiguous subchain and a split table records
 the selected parenthesization. Checked arithmetic rejects chains whose costs
 cannot be represented by `int64_t`. Empty dimension input is an empty chain;
 one matrix has zero multiplication cost.
+
+Bounded TSP uses Held-Karp subset DP. A state records the set of visited
+locations and the last location; the solver stores the least cost for that
+state and a predecessor for route reconstruction. Optional matrix entries
+represent missing directed edges, while zero is a valid edge cost. The
+implementation supports asymmetric nonnegative costs, detects cost overflow,
+and returns no tour when the required round trip is infeasible. It is capped
+at 18 vertices: this bounds the exponential table to about 4.7 million
+subset/endpoint states, limiting both runtime and memory to an explicit,
+documented range. A one-location tour has cost zero and repeats that location
+as its return.
 
 The airport facade exposes the Knapsack choice as budgeted upgrade planning
 and Matrix Chain as analytics-pipeline ordering. These outputs inform resource
@@ -146,10 +164,14 @@ tolerance.
 Its examples show appointment selection, lane allocation, route planning,
 infrastructure planning by both MST methods, event-log compression, budgeted
 upgrade selection, analytics matrix-chain ordering, history comparison, and
-frequency-weighted record lookup.
+frequency-weighted record lookup, equipment selection with all three Branch
+and Bound strategies, and an inspection tour through service locations.
 Planning priority and route cost do not bypass screening: screening policy is
 outside these algorithms and remains mandatory for every passenger.
 
 See `docs/ALGORITHM_EXAMPLES.md` for executable examples and commands. The
 greedy demonstration can be run with `./build/project31_greedy_example`; the
-DP demonstration can be run with `./build/project31_dynamic_programming_example`.
+DP demonstrations can be run with `./build/project31_dynamic_programming_example`,
+`./build/project31_dynamic_programming_batch2_example`, and
+`./build/bounded_tsp_example`. The Branch and Bound strategies are demonstrated
+by `./build/branch_bound_example` and `./build/least_cost_branch_bound_example`.

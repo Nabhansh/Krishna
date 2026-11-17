@@ -159,3 +159,50 @@ from the back so the include branch is explored immediately. It explores the
 same exponential search tree depth-first. Each of at most `O(n)` live stack
 states carries an `O(n)` selected-index path; bound calculation across all
 states is `O(n 2^n)` time, while live-state storage is `O(n^2)`.
+
+## Least-Cost Branch and Bound (0/1 Knapsack)
+
+The state, include/exclude transitions, incumbent, and fractional-knapsack
+upper bound are the same as for FIFO and LIFO. The live state is selected by
+best-first search:
+
+```text
+next = live node with maximum upper bound
+if upperBound(next) <= best: discard it
+otherwise evaluate and expand its feasible include/exclude children
+```
+
+Because this is a maximization problem, the priority queue removes the largest
+upper bound first. A monotonically increasing insertion sequence resolves
+equal bounds reproducibly. The bound is admissible: relaxing the remaining
+0/1 choices to permit a fractional final item cannot underestimate any
+integral completion, so pruning a state whose bound cannot exceed the
+incumbent preserves an optimal solution. In the worst case, up to `O(2^n)`
+states are generated and each bound/path operation is `O(n)`, giving
+`O(n 2^n)` time and `O(n 2^n)` live-state storage. Best-first ordering can
+find strong incumbents early but does not improve the exponential worst case.
+
+## Bounded Travelling Salesperson (Held-Karp)
+
+For a fixed start vertex `s`, let `D[S,j]` be the minimum cost of a path
+starting at `s`, visiting exactly the vertex subset `S`, and ending at `j`.
+The start is in `S`; absent directed edges have no transition:
+
+```text
+D[{s}, s] = 0
+D[S union {j}, j] = min over i in S, edge(i,j) exists of
+                    D[S,i] + cost(i,j)
+tourCost = min over j != s, edge(j,s) exists of
+           D[allVertices,j] + cost(j,s)
+```
+
+The implementation stores the predecessor attaining each minimum and walks
+those entries backward to reconstruct a closed tour. This subset-state
+recurrence explores every visit order compactly instead of enumerating `n!`
+permutations. There are `O(n 2^n)` subset/endpoint states and up to `O(n)`
+predecessors per state, so time is `O(n^2 2^n)` and space is `O(n 2^n)`.
+The solver accepts directed/asymmetric nonnegative costs, represents missing
+edges with empty optionals (not zero), checks additions for overflow, and
+returns no result if no Hamiltonian cycle through the specified start exists.
+The explicit 18-vertex cap limits the DP to about 4.7 million states. For one
+vertex, the tour is `[s,s]` with zero cost.

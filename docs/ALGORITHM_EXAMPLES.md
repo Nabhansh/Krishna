@@ -102,3 +102,26 @@ FIFO (breadth-first) and LIFO (depth-first) branch-and-bound searches. Each
 reports the best value and original package identifiers. Both use a
 fractional-knapsack upper bound to prune states and are checked against the
 project's dynamic-programming 0/1 Knapsack implementation in tests.
+
+## Least-cost Branch and Bound and bounded inspection tour
+
+```sh
+cmake --build build --target least_cost_branch_bound_example bounded_tsp_example
+./build/least_cost_branch_bound_example
+./build/bounded_tsp_example
+```
+
+The equipment example compares FIFO, LIFO, and Least-Cost Branch and Bound on
+the same screening equipment and weight limit. Least-Cost uses a priority
+queue, expanding the live state with the highest fractional-knapsack upper
+bound first; this is the promising direction for the shared maximization
+objective. All strategies return maximum value and original selected indices.
+Their worst-case search remains exponential, but the queue policies offer
+different exploration and memory tradeoffs.
+
+The inspection example uses Held-Karp dynamic programming to find a minimum
+cost round trip through every listed airport service location. Its optional
+matrix entries denote missing directed routes; zero is a valid route cost.
+Asymmetric nonnegative costs are supported. The solver returns no tour for
+infeasible route networks and supports at most 18 locations to bound its
+`O(n 2^n)` memory and `O(n^2 2^n)` runtime.
