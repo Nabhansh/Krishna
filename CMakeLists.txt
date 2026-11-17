@@ -17,10 +17,12 @@ add_library(project31_core
     src/core/SecurityOfficer.cpp
     src/algorithms/BinarySearch.cpp
     src/algorithms/ActivitySelection.cpp
+    src/algorithms/BellmanFord.cpp
     src/algorithms/CelebrityProblem.cpp
     src/algorithms/ClassicalMatrixMultiplication.cpp
     src/algorithms/Dijkstra.cpp
     src/algorithms/FastExponentiation.cpp
+    src/algorithms/FloydWarshall.cpp
     src/algorithms/HuffmanCoding.cpp
     src/algorithms/IntervalPartitioning.cpp
     src/algorithms/Knapsack.cpp
@@ -71,6 +73,7 @@ if(BUILD_TESTING)
         tests/unit/greedy_tests.cpp
         tests/unit/dynamic_programming_tests.cpp
         tests/unit/dynamic_programming_batch2_tests.cpp
+        tests/unit/graph_algorithms_tests.cpp
         tests/integration/airport_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
@@ -106,6 +109,14 @@ add_executable(project31_dynamic_programming_batch2_example
 )
 target_link_libraries(project31_dynamic_programming_batch2_example PRIVATE project31_core)
 target_compile_options(project31_dynamic_programming_batch2_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(project31_graph_algorithms_example
+    examples/graph_algorithms_example.cpp
+)
+target_link_libraries(project31_graph_algorithms_example PRIVATE project31_core)
+target_compile_options(project31_graph_algorithms_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 

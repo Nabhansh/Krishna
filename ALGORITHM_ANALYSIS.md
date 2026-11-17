@@ -44,6 +44,19 @@ length in addition to the O(kℓ) stored codewords and O(k) tree nodes.
 - Prim grows a minimum tree per connected component by the lightest crossing
   edge. Kruskal accepts exactly edges joining distinct DSU components.
 
+## Graph shortest paths
+
+| Algorithm | Airport use | Time | Auxiliary space |
+|---|---|---:|---:|
+| Bellman-Ford | Single-source facility route costs with negative adjustments | O(VE) | O(V) |
+| Floyd-Warshall | All-pairs route costs among airport facilities | O(V^3) | O(V^2) |
+
+Both use directed weighted edges and checked `int64_t` distance arithmetic.
+Bellman-Ford stores predecessor vertices and rejects a negative cycle only
+when it is reachable from the selected source. Floyd-Warshall stores a
+next-hop matrix and rejects any negative cycle. Unreachable pairs are
+represented by empty optionals; path accessors return no path for those pairs.
+
 ## Divide and conquer algorithms
 
 | Algorithm | Time | Auxiliary space |

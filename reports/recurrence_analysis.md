@@ -68,3 +68,38 @@ examining up to `n` roots, so time is `O(n^3)` and cost, weight, and root tables
 use `O(n^2)` space. The expected cost is measured in comparisons, with root
 depth one; input probabilities are validated to sum to one within a small
 floating-point tolerance.
+
+## Bellman-Ford
+
+Let `D_k(v)` be the best distance to `v` after considering paths with at most
+`k` edges. With source `s`:
+
+```text
+D_0(s) = 0
+D_0(v) = infinity                                for v != s
+D_k(v) = min(D_(k-1)(v),
+             min over edges (u,v) of D_(k-1)(u) + w(u,v))
+```
+
+An optimal simple path uses at most `V-1` edges. The implementation relaxes
+all edges for at most `V-1` passes, stopping when no distance changes, then
+checks for a further reachable improvement to detect a reachable negative
+cycle. This takes `O(VE)` time and `O(V)` auxiliary space, excluding the input
+edge list.
+
+## Floyd-Warshall
+
+Let `D_k[i,j]` be the shortest path from `i` to `j` whose intermediate
+vertices are drawn from the first `k` vertices:
+
+```text
+D_0[i,j] = minimum direct edge weight, or 0 for i == j, or infinity
+D_k[i,j] = min(D_(k-1)[i,j],
+               D_(k-1)[i,k] + D_(k-1)[k,j])
+```
+
+The intermediate-vertex loop computes the all-pairs table in `O(V^3)` time
+and `O(V^2)` space. A negative diagonal entry after the iterations identifies
+a negative cycle. The parallel next-hop matrix supports route reconstruction.
+Both shortest-path implementations guard signed distance addition against
+overflow.

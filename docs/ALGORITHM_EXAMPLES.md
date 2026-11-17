@@ -62,3 +62,17 @@ must be supplied in strictly increasing order; successful probabilities have
 one value per key and unsuccessful probabilities have one extra boundary
 value. Each probability must be finite and in `[0,1]`; callers provide
 values whose total is one (within floating-point tolerance).
+
+## Graph shortest-path planning
+
+```sh
+cmake --build build --target project31_graph_algorithms_example
+./build/project31_graph_algorithms_example
+```
+
+The graph demonstration compares Bellman-Ford single-source route planning
+with Floyd-Warshall all-pairs planning for airport facilities. Its negative
+edge is a net operational cost adjustment, not negative travel time. Both
+algorithms return route reconstruction data; Bellman-Ford rejects a negative
+cycle reachable from its source, while Floyd-Warshall rejects any negative
+cycle in the graph.

@@ -89,39 +89,29 @@ and sources:
   overflow, and operational-facade cases.
 - Greedy correctness, complexity, and airport mapping documentation.
 
-The current branch's 49-test baseline was confirmed by the project owner. The
-pre-existing `build/project31_tests` executable was also run in this session:
-all 49 tests passed. A fresh build is still required to validate source edits
-against the current system toolchain.
+Batch B verification:
 
-## Dynamic programming — Knapsack and Matrix Chain implemented; verification blocked
+- The build and all 49 tests passed.
+- The greedy demonstration ran successfully.
 
-Implemented:
+## Dynamic programming — first two batches complete and verified
+
+The first DP batch implemented:
 
 - Bottom-up 0/1 Knapsack with a full DP table, selected-item reconstruction,
   input checks, and value/table-size overflow guards.
 - Bottom-up Matrix Chain Multiplication with a split table, optimal
   parenthesization reconstruction, dimension checks, and checked cost
   arithmetic.
-- Airport operations facade methods for fixed-budget equipment upgrade
-  selection and analytics matrix multiplication ordering.
-- Seven focused unit tests, including small-instance brute-force Knapsack
-  comparisons, boundaries, invalid inputs, and overflow cases; the existing
-  airport integration test also covers both facade methods.
-- A runnable `project31_dynamic_programming_example` target and recurrence,
-  complexity, and airport-mapping documentation.
+- Bottom-up Longest Common Subsequence with reconstruction of one optimal
+  subsequence.
+- Optimal Binary Search Tree with successful/unsuccessful probabilities,
+  expected-cost calculation, and optimal tree reconstruction.
+- Airport operations APIs, runnable examples, focused unit tests, and
+  complexity/recurrence documentation for both batches.
 
-Verification status:
+Verified baseline at commit `ddd1d1b`:
 
-- Debug CMake configure succeeded.
-- The requested build failed before project sources or tests could compile:
-  GCC 16's configured include paths reference `bits/wordsize.h`, which is
-  unavailable in this environment. No alternate C++ compiler is installed.
-- The already-built baseline test executable passed 49/49 tests, but it does
-  not include the new DP tests or sources.
-- Consequently the seven new unit tests, updated integration test, and new
-  example have not been compiled or run. The two algorithms are implemented
-  but must not be marked verified until a fresh build and full test run pass.
-
-Further dynamic-programming algorithms remain deferred until this verification
-gate is cleared.
+- 19 of 34 algorithms implemented and verified.
+- All 62 GoogleTests passed.
+- Both dynamic-programming examples ran successfully.

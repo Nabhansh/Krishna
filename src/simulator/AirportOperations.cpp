@@ -75,4 +75,19 @@ algorithms::OptimalBinarySearchTreeResult AirportOperations::buildOperationalLoo
     );
 }
 
+algorithms::BellmanFordResult AirportOperations::planAirportRoutesWithBellmanFord(
+    std::size_t airportCount,
+    const std::vector<algorithms::DirectedWeightedEdge>& routes,
+    std::size_t departureAirport
+) {
+    return algorithms::bellmanFordShortestPaths(airportCount, routes, departureAirport);
+}
+
+algorithms::FloydWarshallResult AirportOperations::planAllAirportRoutesWithFloydWarshall(
+    std::size_t airportCount,
+    const std::vector<algorithms::DirectedWeightedEdge>& routes
+) {
+    return algorithms::floydWarshallShortestPaths(airportCount, routes);
+}
+
 } // namespace project31

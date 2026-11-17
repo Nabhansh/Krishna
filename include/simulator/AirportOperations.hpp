@@ -10,6 +10,8 @@
 #include "algorithms/dynamic_programming/LongestCommonSubsequence.hpp"
 #include "algorithms/dynamic_programming/MatrixChainMultiplication.hpp"
 #include "algorithms/dynamic_programming/OptimalBinarySearchTree.hpp"
+#include "algorithms/graph/BellmanFord.hpp"
+#include "algorithms/graph/FloydWarshall.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -58,6 +60,15 @@ public:
         const std::vector<std::string>& sortedUniqueKeys,
         const std::vector<double>& successfulProbabilities,
         const std::vector<double>& unsuccessfulProbabilities
+    );
+    [[nodiscard]] static algorithms::BellmanFordResult planAirportRoutesWithBellmanFord(
+        std::size_t airportCount,
+        const std::vector<algorithms::DirectedWeightedEdge>& routes,
+        std::size_t departureAirport
+    );
+    [[nodiscard]] static algorithms::FloydWarshallResult planAllAirportRoutesWithFloydWarshall(
+        std::size_t airportCount,
+        const std::vector<algorithms::DirectedWeightedEdge>& routes
     );
 };
 
