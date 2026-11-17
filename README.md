@@ -29,6 +29,12 @@ Run the interactive application with:
 ./build/project31
 ```
 
+The standalone greedy planning and compression example is:
+
+```sh
+./build/project31_greedy_example
+```
+
 The CLI can look up passengers by ID, list passengers in a priority bucket,
 and display IDs sorted with either implemented sorting algorithm. Lower
 numeric priority values indicate more urgent passengers.

@@ -53,7 +53,7 @@ Verified on Fedora with GCC 16.2.1 and CMake 4.3.0:
 - The sorting benchmark completed for 100, 5,000, and 50,000 passenger IDs.
 - Benchmark measurements are recorded in `BENCHMARK_REPORT.md`.
 
-## Batch A — implemented; verification blocked
+## Batch A — complete and verified
 
 Implemented five independent divide-and-conquer algorithms with headers,
 sources, tests, and an example executable:
@@ -65,16 +65,41 @@ sources, tests, and an example executable:
 - Added ten focused GoogleTests, including empty/invalid inputs, numerical
   boundaries, rectangular products, and Strassen padding.
 
-CMake configuration passed. The first GCC build attempt could not compile
-either project or GoogleTest because GCC's standard-library include
-directories were unavailable to the compiler in the current environment
-(`fatal error: string/cstddef: No such file or directory`). This is an
-environment/toolchain-access failure, so Batch A is not verified. Batch B has
-not been started; the requested build/test gate must pass first.
+Verified on the current branch as confirmed for commit `a8811b5`:
 
-## Batch B — not started
+- GCC/CMake build passed.
+- All 32 GoogleTests passed.
+- The Batch A example ran successfully.
 
-The six greedy algorithms have not yet been implemented.
+## Batch B — source/tests added; verification blocked
 
-Dynamic programming and later categories remain deferred until Batches A and B
-are implemented and verified.
+Implemented six independent greedy algorithm modules with separate headers
+and sources:
+
+- Activity Selection (hand-written merge sort by finish time).
+- Interval Partitioning (hand-written merge sort and min-heap resource index).
+- Huffman Coding (frequency heap, prefix-free code generation, encoding and
+  decoding, including the single-symbol case).
+- Dijkstra (rejects negative weights and reports unreachable vertices).
+- Prim and Kruskal (minimum spanning forest for disconnected graphs); Kruskal
+  includes its own DSU and hand-written edge merge sort.
+- `AirportOperations` facade and executable airport scheduling/routing/
+  infrastructure/log-compression demonstration.
+- Seventeen Batch B GoogleTests for normal, empty, invalid, disconnected,
+  overflow, and operational-facade cases.
+- Greedy correctness, complexity, and airport mapping documentation.
+
+CMake configuration succeeded. The GCC build was attempted but cannot compile
+standard headers in the current environment (`bits/wordsize.h` is unavailable
+through the compiler's configured system include paths). Consequently none of
+the Batch B sources, tests, or demonstration have compiled/run; these
+algorithms must not yet be treated as complete/verified.
+
+The confirmed baseline remains 32 passing tests. The 17 new tests are authored
+but unrun, so there is no verified post-Batch-B passing-test count.
+
+The requested Batch B build/test gate is outstanding. No dynamic-programming
+work has started.
+
+Dynamic programming and later categories remain deferred until Batch B is
+compiled and all tests pass.

@@ -16,14 +16,21 @@ add_library(project31_core
     src/core/SecurityLane.cpp
     src/core/SecurityOfficer.cpp
     src/algorithms/BinarySearch.cpp
+    src/algorithms/ActivitySelection.cpp
     src/algorithms/CelebrityProblem.cpp
     src/algorithms/ClassicalMatrixMultiplication.cpp
+    src/algorithms/Dijkstra.cpp
     src/algorithms/FastExponentiation.cpp
+    src/algorithms/HuffmanCoding.cpp
+    src/algorithms/IntervalPartitioning.cpp
+    src/algorithms/Kruskal.cpp
     src/algorithms/MaximumSubarray.cpp
     src/algorithms/MergeSort.cpp
+    src/algorithms/Prim.cpp
     src/algorithms/QuickSort.cpp
     src/algorithms/StrassenMatrixMultiplication.cpp
     src/simulator/QueueManager.cpp
+    src/simulator/AirportOperations.cpp
     src/simulator/QueueWorkloadIndex.cpp
 )
 target_include_directories(project31_core PUBLIC include)
@@ -57,6 +64,7 @@ if(BUILD_TESTING)
         tests/unit/searching_tests.cpp
         tests/unit/index_tests.cpp
         tests/unit/divide_conquer_tests.cpp
+        tests/unit/greedy_tests.cpp
         tests/integration/airport_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
@@ -70,6 +78,12 @@ endif()
 add_executable(project31_batch_a_example examples/batch_a_example.cpp)
 target_link_libraries(project31_batch_a_example PRIVATE project31_core)
 target_compile_options(project31_batch_a_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(project31_greedy_example examples/greedy_example.cpp)
+target_link_libraries(project31_greedy_example PRIVATE project31_core)
+target_compile_options(project31_greedy_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 
