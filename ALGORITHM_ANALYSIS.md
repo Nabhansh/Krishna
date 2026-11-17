@@ -72,6 +72,23 @@ and exclusion choices, pruning any selected value larger than the remaining
 target. Nonnegative inputs enable this pruning and the capped total check
 avoids overflow when quickly rejecting unreachable targets.
 
+## Branch and bound
+
+| Algorithm | Airport use | Worst-case time | Auxiliary space |
+|---|---|---:|---:|
+| FIFO Branch and Bound | Select valuable screening equipment with breadth-first live-node expansion | O(n 2^n) | O(n 2^n) |
+| LIFO Branch and Bound | Select valuable screening equipment with depth-first live-node expansion | O(n 2^n) | O(n^2) |
+
+Both solvers use 0/1 Knapsack decisions and a fractional-knapsack relaxation
+as an admissible upper bound. Items are ordered deterministically by exact
+value-to-weight ratio and identifier; original indices are preserved in
+results. Each explored node computes an O(n) bound and carries an O(n) choice
+path. FIFO expands the oldest live node from a queue and may retain
+exponentially many such paths. LIFO expands the newest live node from a stack;
+its live frontier has at most O(n) nodes, each carrying an O(n) path. Both
+have exponential worst-case search and reject unrepresentable feasible value
+sums.
+
 ## Divide and conquer algorithms
 
 | Algorithm | Time | Auxiliary space |

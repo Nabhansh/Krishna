@@ -130,3 +130,32 @@ include branch. In the worst case, inclusion/exclusion visits `O(2^n)` states
 with `O(n)` recursive stack and selected-index storage. A preliminary sum
 check is capped at the target, so the feasibility check itself cannot
 overflow.
+
+## FIFO Branch and Bound (0/1 Knapsack)
+
+Each state records the next item position, accumulated weight/value, and
+selected original indices. It creates include/exclude children when feasible.
+The admissible bound adds the maximum value of a fractional relaxation of the
+remaining items, considered in nonincreasing value-to-weight ratio:
+
+```text
+U(node) = node.value
+         + value of the best fractional fill of (capacity - node.weight)
+best = max(best, node.value)
+expand node only when U(node) > best
+```
+
+FIFO stores live states in a queue and pops from the front, yielding
+breadth-first state-space exploration. Up to `O(2^n)` states can be retained;
+bound computation and state path copying cost `O(n)` per state, so worst-case
+time and space are `O(n 2^n)`.
+
+## LIFO Branch and Bound (0/1 Knapsack)
+
+The state definition, include/exclude transitions, incumbent, and admissible
+fractional bound are the same as FIFO Branch and Bound. LIFO stores live
+states in a stack, pushes the exclude child before the include child, and pops
+from the back so the include branch is explored immediately. It explores the
+same exponential search tree depth-first. Each of at most `O(n)` live stack
+states carries an `O(n)` selected-index path; bound calculation across all
+states is `O(n 2^n)` time, while live-state storage is `O(n^2)`.

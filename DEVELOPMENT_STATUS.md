@@ -127,11 +127,24 @@ Verified baseline at commit `f707b69`:
 - 21 of 34 algorithms implemented and verified.
 - All 72 GoogleTests passed.
 
-## Backtracking — implementation added; verification blocked
+## Backtracking — complete and verified
 
-Added N-Queens enumeration and Subset Sum search, their AirportOperations
+Implemented N-Queens enumeration and Subset Sum search, their AirportOperations
 entry points, eight focused GoogleTests, `backtracking_example`, and
 complexity/recurrence/airport-use documentation.
+
+Verified baseline at commit `913467c`:
+
+- 23 of 34 algorithms implemented and verified.
+- All 80 GoogleTests passed.
+- The backtracking example ran successfully.
+
+## Branch and bound — implementation added; verification blocked
+
+Added FIFO and LIFO Branch and Bound for the shared 0/1 Knapsack equipment
+model, AirportOperations entry points, eight focused GoogleTests including
+small-instance checks against the DP Knapsack solver, `branch_bound_example`,
+and complexity/recurrence/airport-use documentation.
 
 Verification attempt:
 
@@ -140,6 +153,6 @@ Verification attempt:
   configured system headers reference unavailable `bits/wordsize.h`.
 - CTest could not run because the clean build did not produce the test binary;
   the example executable is likewise unavailable.
-- The 21/34 algorithms and 72/72 passing tests above remain the latest
-  verified baseline. Backtracking implementations and eight new tests are
-  authored but unverified; no commit or push was made.
+- The 23/34 algorithms and 80/80 passing tests above remain the latest
+  verified baseline. The two branch-and-bound implementations and eight new
+  tests are authored but unverified; no commit or push was made.

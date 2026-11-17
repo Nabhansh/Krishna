@@ -14,6 +14,8 @@
 #include "algorithms/graph/FloydWarshall.hpp"
 #include "algorithms/backtracking/NQueens.hpp"
 #include "algorithms/backtracking/SubsetSum.hpp"
+#include "algorithms/branch_bound/FifoBranchAndBound.hpp"
+#include "algorithms/branch_bound/LifoBranchAndBound.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -78,6 +80,14 @@ public:
     [[nodiscard]] static std::optional<std::vector<std::size_t>> selectResourcePackages(
         const std::vector<std::int64_t>& packageCapacities,
         std::int64_t targetCapacity
+    );
+    [[nodiscard]] static algorithms::BranchBoundKnapsackResult selectEquipmentFifoBranchAndBound(
+        const std::vector<algorithms::BranchBoundItem>& equipment,
+        std::int64_t weightLimit
+    );
+    [[nodiscard]] static algorithms::BranchBoundKnapsackResult selectEquipmentLifoBranchAndBound(
+        const std::vector<algorithms::BranchBoundItem>& equipment,
+        std::int64_t weightLimit
     );
 };
 

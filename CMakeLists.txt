@@ -18,6 +18,7 @@ add_library(project31_core
     src/algorithms/BinarySearch.cpp
     src/algorithms/ActivitySelection.cpp
     src/algorithms/BellmanFord.cpp
+    src/algorithms/FifoBranchAndBound.cpp
     src/algorithms/CelebrityProblem.cpp
     src/algorithms/ClassicalMatrixMultiplication.cpp
     src/algorithms/Dijkstra.cpp
@@ -25,6 +26,7 @@ add_library(project31_core
     src/algorithms/FloydWarshall.cpp
     src/algorithms/HuffmanCoding.cpp
     src/algorithms/IntervalPartitioning.cpp
+    src/algorithms/LifoBranchAndBound.cpp
     src/algorithms/Knapsack.cpp
     src/algorithms/Kruskal.cpp
     src/algorithms/LongestCommonSubsequence.cpp
@@ -77,6 +79,7 @@ if(BUILD_TESTING)
         tests/unit/dynamic_programming_batch2_tests.cpp
         tests/unit/graph_algorithms_tests.cpp
         tests/unit/backtracking_tests.cpp
+        tests/unit/branch_bound_tests.cpp
         tests/integration/airport_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
@@ -126,6 +129,12 @@ target_compile_options(project31_graph_algorithms_example PRIVATE
 add_executable(backtracking_example examples/backtracking_example.cpp)
 target_link_libraries(backtracking_example PRIVATE project31_core)
 target_compile_options(backtracking_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(branch_bound_example examples/branch_bound_example.cpp)
+target_link_libraries(branch_bound_example PRIVATE project31_core)
+target_compile_options(branch_bound_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 

@@ -103,4 +103,18 @@ std::optional<std::vector<std::size_t>> AirportOperations::selectResourcePackage
     return algorithms::findSubsetSum(packageCapacities, targetCapacity);
 }
 
+algorithms::BranchBoundKnapsackResult AirportOperations::selectEquipmentFifoBranchAndBound(
+    const std::vector<algorithms::BranchBoundItem>& equipment,
+    std::int64_t weightLimit
+) {
+    return algorithms::solveKnapsackFifoBranchAndBound(equipment, weightLimit);
+}
+
+algorithms::BranchBoundKnapsackResult AirportOperations::selectEquipmentLifoBranchAndBound(
+    const std::vector<algorithms::BranchBoundItem>& equipment,
+    std::int64_t weightLimit
+) {
+    return algorithms::solveKnapsackLifoBranchAndBound(equipment, weightLimit);
+}
+
 } // namespace project31

@@ -89,3 +89,16 @@ board and selects resource-package indices whose capacities total exactly 10.
 N-Queens enumerates all solutions and accepts board sizes only from 1 through
 12. Subset Sum supports nonnegative package capacities and returns one set of
 original input indices, or reports that no exact combination exists.
+
+## Branch-and-bound equipment allocation
+
+```sh
+cmake --build build --target branch_bound_example
+./build/branch_bound_example
+```
+
+The example selects screening equipment under one weight limit with both
+FIFO (breadth-first) and LIFO (depth-first) branch-and-bound searches. Each
+reports the best value and original package identifiers. Both use a
+fractional-knapsack upper bound to prune states and are checked against the
+project's dynamic-programming 0/1 Knapsack implementation in tests.
