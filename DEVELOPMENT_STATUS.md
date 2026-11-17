@@ -157,29 +157,23 @@ verified.
 
 ## Latest verified development state
 
-- 32 of 34 mandatory algorithms implemented and verified.
-- All 133 GoogleTests passed, including airport integration tests.
+- All 34 of 34 mandatory algorithms implemented and verified.
+- All 140 GoogleTests passed, including airport integration tests.
 - FIFO, LIFO, and Least-Cost Branch and Bound verified.
 - Bounded Travelling Salesperson using Held-Karp dynamic programming verified.
 - Ford-Fulkerson (Edmonds-Karp) and Maximum Bipartite Matching verified.
 - Chinese Remainder Theorem, Naive String Matching, and Rabin-Karp verified.
-- CRT and string-matching examples executed successfully.
-- String-matching benchmark completed successfully; Naive and Rabin-Karp
-  returned identical match positions.
-- Clean CMake build passed on Fedora.
-- Complete CTest suite passed, 133/133.
+- Finite Automaton String Matching and Knuth-Morris-Pratt (KMP) verified.
+- Clean CMake build passed on the Fedora host.
+- Complete CTest suite passed, 140/140.
+- CRT scheduling and string-matching examples executed successfully.
+- Four-algorithm string-matching benchmark completed successfully; Naive,
+  Rabin-Karp, Finite Automaton, and KMP returned identical match positions.
 - `git diff --check` passed.
 - Current branch: `milestone-3-divide-greedy`.
-- Latest commit before this batch: `047cef0`.
+- Latest commit before this batch: `0f68ce6`.
 
-## Remaining algorithms — not yet implemented and verified
-
-Exactly two of the 34 mandatory algorithms remain:
-
-- Finite Automaton String Matching.
-- Knuth-Morris-Pratt (KMP).
-
-## Chinese Remainder Theorem and string matching — complete and verified
+## Chinese Remainder Theorem and initial string matching — intermediate batch verified
 
 Implemented the Chinese Remainder Theorem utility, Naive String Matching, and
 Rabin-Karp String Matching. Added AirportOperations APIs for periodic
@@ -188,7 +182,7 @@ integration tests, runnable examples, and a benchmark comparing small,
 medium, large, and adversarial periodic inputs. Both matchers were checked to
 return identical positions before timing.
 
-Successful Fedora host verification:
+At that batch's successful Fedora host verification:
 
 - Clean CMake build passed.
 - Complete CTest suite passed, 133/133.
@@ -196,3 +190,26 @@ Successful Fedora host verification:
 - String-matching example passed.
 - String-matching benchmark passed with matching result positions.
 - `git diff --check` passed.
+
+## Finite Automaton and KMP string matching — complete and verified
+
+Added a 256-byte finite-automaton matcher and Knuth-Morris-Pratt matcher,
+reusable prepared-pattern objects, AirportOperations log-search methods,
+focused and differential tests, and an airport integration test. Extended the
+string-matching example and benchmark to cover all four matchers; the
+benchmark separates finite-automaton and KMP preprocessing from scanning and
+checks result equality before reporting timings.
+
+Successful Fedora host verification:
+
+- All 34 mandatory algorithms implemented and verified.
+- Clean CMake build passed.
+- Complete CTest suite passed, 140/140.
+- String-matching example passed.
+- All four string matchers returned identical match positions.
+- Four-algorithm benchmark passed.
+- `git diff --check` passed.
+
+Algorithm completion and verification establish the documented algorithm
+scope only; they do not by themselves prove that the entire expected airport
+simulator product is complete.

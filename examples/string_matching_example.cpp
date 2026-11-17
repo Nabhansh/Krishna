@@ -25,11 +25,21 @@ int main() {
         project31::AirportOperations::findFlightCodesInLogNaive(log, flightCode);
     const auto rabinKarp =
         project31::AirportOperations::findFlightCodesInLogRabinKarp(log, flightCode);
-    if (naive != rabinKarp) {
+    const auto finiteAutomaton =
+        project31::AirportOperations::findFlightCodesInLogFiniteAutomaton(
+            log, flightCode
+        );
+    const auto kmp =
+        project31::AirportOperations::findFlightCodesInLogKnuthMorrisPratt(
+            log, flightCode
+        );
+    if (naive != rabinKarp || naive != finiteAutomaton || naive != kmp) {
         std::cerr << "String matching implementations disagree.\n";
         return 1;
     }
     printMatches("Naive", naive);
     printMatches("Rabin-Karp", rabinKarp);
+    printMatches("Finite automaton", finiteAutomaton);
+    printMatches("KMP", kmp);
     return 0;
 }

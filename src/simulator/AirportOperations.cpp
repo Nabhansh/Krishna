@@ -183,4 +183,20 @@ std::vector<std::size_t> AirportOperations::findFlightCodesInLogRabinKarp(
     return algorithms::rabinKarpStringMatch(log, flightCode);
 }
 
+std::vector<std::size_t>
+AirportOperations::findFlightCodesInLogFiniteAutomaton(
+    const std::string& log,
+    const std::string& flightCode
+) {
+    return algorithms::finiteAutomatonStringMatch(log, flightCode);
+}
+
+std::vector<std::size_t>
+AirportOperations::findFlightCodesInLogKnuthMorrisPratt(
+    const std::string& log,
+    const std::string& flightCode
+) {
+    return algorithms::knuthMorrisPrattStringMatch(log, flightCode);
+}
+
 } // namespace project31

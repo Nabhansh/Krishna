@@ -190,19 +190,27 @@ periods and any combined modulus that cannot fit in `int64_t`. An empty
 schedule system has identity result `0 mod 1`.
 
 The log example searches byte-oriented records for flight code `FLT-217`.
-Naive matching and Rabin-Karp return the same zero-based offsets:
+Naive, Rabin-Karp, finite-automaton, and KMP matchers return the same
+zero-based offsets:
 
 ```text
 Naive match offsets: 8 39
 Rabin-Karp match offsets: 8 39
+Finite automaton match offsets: 8 39
+KMP match offsets: 8 39
 ```
 
-Both matchers include overlaps and treat an empty pattern as matching every
-boundary. They search the exact bytes in `std::string`; they do not decode
-Unicode. Rabin-Karp verifies equality after hash matches to rule out collision
-false positives.
+All four matchers include overlaps and treat an empty pattern as matching
+every boundary. They search the exact bytes in `std::string`; they do not
+decode Unicode. Rabin-Karp verifies equality after hash matches to rule out
+collision false positives. The finite automaton preprocesses transitions for
+all 256 byte values; KMP preprocesses the pattern's LPS table and reuses it
+after mismatches.
 
-The benchmark compares results before timing:
+The benchmark compares results from all four matchers before timing. Naive and
+Rabin-Karp are measured as one-shot operations. Finite-automaton and KMP
+pattern preprocessing and text scanning are timed separately using reusable
+prepared matchers:
 
 ```sh
 cmake --build build --target project31_string_matching_benchmark
@@ -210,4 +218,4 @@ cmake --build build --target project31_string_matching_benchmark
 ```
 
 Datasets cover small, medium, large, and adversarial periodic text. A row is
-reported only if both algorithms produce identical match positions.
+reported only if all four algorithms produce identical match positions.

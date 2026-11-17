@@ -23,6 +23,8 @@
 #include "algorithms/number_theory/ChineseRemainderTheorem.hpp"
 #include "algorithms/string_matching/NaiveStringMatching.hpp"
 #include "algorithms/string_matching/RabinKarp.hpp"
+#include "algorithms/string_matching/FiniteAutomatonStringMatching.hpp"
+#include "algorithms/string_matching/KnuthMorrisPratt.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -127,6 +129,16 @@ public:
         const std::string& flightCode
     );
     [[nodiscard]] static std::vector<std::size_t> findFlightCodesInLogRabinKarp(
+        const std::string& log,
+        const std::string& flightCode
+    );
+    [[nodiscard]] static std::vector<std::size_t>
+    findFlightCodesInLogFiniteAutomaton(
+        const std::string& log,
+        const std::string& flightCode
+    );
+    [[nodiscard]] static std::vector<std::size_t>
+    findFlightCodesInLogKnuthMorrisPratt(
         const std::string& log,
         const std::string& flightCode
     );

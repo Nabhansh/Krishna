@@ -30,6 +30,14 @@ TEST(AirportOperationalLogTests, FindsFlightCodesWithBothSearchStrategies) {
         AirportOperations::findFlightCodesInLogRabinKarp(log, flightCode),
         expected
     );
+    EXPECT_EQ(
+        AirportOperations::findFlightCodesInLogFiniteAutomaton(log, flightCode),
+        expected
+    );
+    EXPECT_EQ(
+        AirportOperations::findFlightCodesInLogKnuthMorrisPratt(log, flightCode),
+        expected
+    );
 }
 
 } // namespace project31

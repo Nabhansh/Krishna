@@ -27,6 +27,7 @@ add_library(project31_core
     src/algorithms/FastExponentiation.cpp
     src/algorithms/FloydWarshall.cpp
     src/algorithms/FordFulkerson.cpp
+    src/algorithms/FiniteAutomatonStringMatching.cpp
     src/algorithms/HuffmanCoding.cpp
     src/algorithms/IntervalPartitioning.cpp
     src/algorithms/LifoBranchAndBound.cpp
@@ -34,6 +35,7 @@ add_library(project31_core
     src/algorithms/MaximumBipartiteMatching.cpp
     src/algorithms/NaiveStringMatching.cpp
     src/algorithms/Knapsack.cpp
+    src/algorithms/KnuthMorrisPratt.cpp
     src/algorithms/Kruskal.cpp
     src/algorithms/LongestCommonSubsequence.cpp
     src/algorithms/MatrixChainMultiplication.cpp
@@ -132,6 +134,7 @@ if(BUILD_TESTING)
         tests/unit/flow_algorithms_tests.cpp
         tests/unit/chinese_remainder_theorem_tests.cpp
         tests/unit/string_matching_tests.cpp
+        tests/unit/string_matching_batch2_tests.cpp
         tests/integration/airport_tests.cpp
         tests/integration/flow_operations_tests.cpp
         tests/integration/number_theory_string_matching_tests.cpp

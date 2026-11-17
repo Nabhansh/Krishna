@@ -106,16 +106,34 @@ overflow error. The empty system returns the identity solution `0 mod 1`.
 |---|---|---:|---:|
 | Naive String Matching | Find flight codes or event markers in operational logs | O(nm) | O(1), excluding output |
 | Rabin-Karp | Search log records with a rolling hash and collision verification | O(nm); expected O(n+m) | O(1), excluding output |
+| Finite Automaton String Matching | Scan operational logs using precomputed flight-code transitions | Preprocess O(256m); search O(n) | O(256m) |
+| Knuth-Morris-Pratt (KMP) | Find checkpoint alerts without rescanning log bytes | Preprocess O(m); search O(n) | O(m) |
 
-Both functions accept text then pattern, return every zero-based start index,
-preserve overlaps, and compare `std::string` bytes (not Unicode code points).
-An empty pattern matches all `n+1` boundaries, while a longer-than-text
-pattern returns no matches. Naive matching compares each candidate window
-directly. Rabin-Karp rolls a fixed-base modular hash from one window to the
-next and verifies byte equality at every hash match, so collisions cannot
-produce false matches. The deterministic hash operations use bounded
-64-bit intermediates. Rabin-Karp is expected linear for typical inputs; with
-many collisions/verified candidates its worst case is O(nm).
+All four functions accept text then pattern, return every zero-based start
+index, preserve overlaps, and compare `std::string` bytes (not Unicode code
+points). An empty pattern matches all `n+1` boundaries, while a
+longer-than-text pattern returns no matches. Naive matching compares each
+candidate window directly. Rabin-Karp rolls a fixed-base modular hash from
+one window to the next and verifies byte equality at every hash match, so
+collisions cannot produce false matches. Its deterministic hash operations
+use bounded 64-bit intermediates. Rabin-Karp is expected linear for typical
+inputs; with many collisions/verified candidates its worst case is O(nm).
+
+The finite automaton's state `q` is the length of the longest pattern prefix
+matching the text suffix seen so far. Its table has `m+1` rows (including the
+accepting state) by all 256 byte values; each transition is computed from a
+fallback-prefix row plus the next pattern byte. Search is one table lookup per
+text byte. The accepting state's transitions use the pattern's longest
+proper border, which allows overlapping matches. The table occupies
+`256(m+1)` `size_t` entries.
+
+KMP builds the longest-proper-prefix-suffix (LPS) length for every pattern
+prefix. On mismatch, the LPS value preserves the longest prefix that may
+still match, without decrementing the text index. After a match, it resumes
+from the final LPS value to find overlaps. Both the automaton and KMP support
+the entire byte alphabet safely by converting each `char` to `unsigned char`.
+Their AirportOperations entry points provide alternative searches for flight
+identifiers, checkpoint events, baggage markers, and security alerts.
 
 ## Backtracking
 

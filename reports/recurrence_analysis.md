@@ -307,3 +307,45 @@ well-distributed hashes and typical text; in the collision-heavy worst case,
 verification makes it `O(nm)`. Auxiliary space is `O(1)`, excluding matches.
 Empty-pattern boundaries, overlap behavior, and byte indexing are identical
 to Naive String Matching.
+
+## Finite Automaton String Matching
+
+For pattern `P` of length `m`, state `q` means the longest prefix of `P`
+matching a suffix of the text consumed so far has length `q`. For each byte
+`c`, the transition is the length of the longest prefix of `P` that is a
+suffix of `P[0..q) + c`:
+
+```text
+delta(q,c) = longest k such that P[0..k) is a suffix of P[0..q) + c
+```
+
+The implementation builds rows for states `0..m`, across all 256 byte
+values. Each nonzero row copies the transition row for its fallback-prefix
+state, then overwrites the transition matching the next pattern byte. The
+accepting row reuses the row for the full pattern's longest proper border.
+Thus each byte advances a deterministic automaton in one lookup; every visit
+to state `m` reports a match, and continuing through the accepting-row
+fallback preserves overlapping occurrences. Preprocessing costs `O(256m)`,
+scanning costs `O(n)`, and the table stores `256(m+1)` `size_t` entries
+(`O(256m)` space). An empty pattern has no transition table and matches all
+text boundaries.
+
+## Knuth-Morris-Pratt String Matching
+
+Let `L[i]` be the length of the longest proper prefix of `P[0..i]` that is
+also a suffix of that prefix. Build this LPS array by retaining the previous
+candidate prefix length and falling back to `L[j-1]` after a mismatch:
+
+```text
+while j > 0 and P[i] != P[j]: j = L[j-1]
+if P[i] == P[j]: j = j+1
+L[i] = j
+```
+
+During search, matching bytes advance both indices. On mismatch, KMP sets the
+pattern index to its LPS fallback and leaves the text index unchanged; after
+a complete match it likewise falls back from `L[m-1]` to preserve overlaps.
+The prefix construction takes `O(m)` time, scanning takes `O(n)` time, and
+the LPS array takes `O(m)` space. Both operations interpret bytes as unsigned
+values for indexing/comparison and use the same all-boundaries convention for
+an empty pattern as the other string matchers.
