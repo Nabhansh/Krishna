@@ -1,0 +1,13 @@
+passenger_id,name,arrival_minute,screening_duration_minutes,priority
+S001,Passenger 1,0,4,2
+S002,Passenger 2,0,5,1
+S003,Passenger 3,0,3,3
+S004,Passenger 4,0,6,2
+S005,Passenger 5,0,4,1
+S006,Passenger 6,1,5,2
+S007,Passenger 7,1,3,3
+S008,Passenger 8,1,6,1
+S009,Passenger 9,1,4,2
+S010,Passenger 10,2,5,1
+S011,Passenger 11,2,3,3
+S012,Passenger 12,2,4,2

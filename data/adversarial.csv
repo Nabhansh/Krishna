@@ -1,0 +1,9 @@
+passenger_id,name,arrival_minute,screening_duration_minutes,priority
+V001,Valid baseline,0,4,2
+,Missing ID,1,4,1
+V003,,2,4,3
+V004,Zero duration,3,0,1
+V005,Negative duration,4,-2,2
+V001,Duplicate ID,5,3,1
+V007,Negative arrival,-1,2,3
+   ,Whitespace ID,6,2,2

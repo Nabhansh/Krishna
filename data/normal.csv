@@ -1,0 +1,6 @@
+passenger_id,name,arrival_minute,screening_duration_minutes,priority
+P001,Ada Lovelace,0,4,2
+P002,Grace Hopper,2,5,1
+P003,Katherine Johnson,3,3,2
+P004,Alan Turing,5,4,3
+P005,Annie Easley,8,6,1
