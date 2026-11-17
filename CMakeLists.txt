@@ -25,10 +25,12 @@ add_library(project31_core
     src/algorithms/Dijkstra.cpp
     src/algorithms/FastExponentiation.cpp
     src/algorithms/FloydWarshall.cpp
+    src/algorithms/FordFulkerson.cpp
     src/algorithms/HuffmanCoding.cpp
     src/algorithms/IntervalPartitioning.cpp
     src/algorithms/LifoBranchAndBound.cpp
     src/algorithms/LeastCostBranchAndBound.cpp
+    src/algorithms/MaximumBipartiteMatching.cpp
     src/algorithms/Knapsack.cpp
     src/algorithms/Kruskal.cpp
     src/algorithms/LongestCommonSubsequence.cpp
@@ -61,6 +63,20 @@ target_compile_options(least_cost_branch_bound_example PRIVATE
 add_executable(bounded_tsp_example examples/bounded_tsp_example.cpp)
 target_link_libraries(bounded_tsp_example PRIVATE project31_core)
 target_compile_options(bounded_tsp_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(ford_fulkerson_example examples/ford_fulkerson_example.cpp)
+target_link_libraries(ford_fulkerson_example PRIVATE project31_core)
+target_compile_options(ford_fulkerson_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(bipartite_matching_example
+    examples/bipartite_matching_example.cpp
+)
+target_link_libraries(bipartite_matching_example PRIVATE project31_core)
+target_compile_options(bipartite_matching_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 
@@ -98,7 +114,9 @@ if(BUILD_TESTING)
         tests/unit/branch_bound_tests.cpp
         tests/unit/least_cost_branch_bound_tests.cpp
         tests/unit/bounded_tsp_tests.cpp
+        tests/unit/flow_algorithms_tests.cpp
         tests/integration/airport_tests.cpp
+        tests/integration/flow_operations_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
     target_compile_options(project31_tests PRIVATE

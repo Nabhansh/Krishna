@@ -57,6 +57,34 @@ when it is reachable from the selected source. Floyd-Warshall stores a
 next-hop matrix and rejects any negative cycle. Unreachable pairs are
 represented by empty optionals; path accessors return no path for those pairs.
 
+## Network flow and matching
+
+| Algorithm | Airport use | Time | Auxiliary space |
+|---|---|---:|---:|
+| Ford-Fulkerson (Edmonds-Karp BFS) | Maximize passenger/baggage throughput through checkpoint capacities | O(VE^2) | O(V + E) |
+| Maximum Bipartite Matching | Assign officers to compatible screening lanes | O(L E) | O(L + R + E) |
+
+Ford-Fulkerson stores a residual graph with a distinct reverse edge for each
+input capacity edge, so parallel and antiparallel connections remain
+independent. Each BFS finds a shortest augmenting path by edge count; the
+bottleneck capacity is pushed along it, and reverse residual capacity permits
+later paths to cancel and reroute earlier flow. When BFS cannot reach the
+sink, the vertices reachable from the source define a cut whose capacity
+equals the accumulated flow, establishing maximality. Per-input edge flows
+are returned in input order. Zero capacities are permitted, negative
+capacities are rejected, and an equal source/sink is explicitly defined to
+produce zero flow. The BFS-based bound is O(VE^2); checked accumulation
+rejects a maximum flow or residual capacity that cannot fit in `int64_t`.
+
+Maximum Bipartite Matching uses DFS augmenting paths (the Kuhn algorithm).
+For each officer, DFS searches allowed lanes and recursively reroutes any
+currently matched officer to another lane. If no augmenting path remains,
+the augmenting-path theorem guarantees the matching has maximum cardinality.
+Each officer and lane appears at most once in the returned pairs. Duplicate
+allowed edges are harmless and preserve deterministic input-order traversal.
+The implementation takes O(L E) time and O(L + R + E) storage, where `L` and
+`R` are partition sizes and `E` is the number of allowed assignment edges.
+
 ## Backtracking
 
 | Algorithm | Airport use | Worst-case time | Auxiliary space |
@@ -163,9 +191,10 @@ tolerance.
 `AirportOperations` is the simulator-facing planning/compression facade.
 Its examples show appointment selection, lane allocation, route planning,
 infrastructure planning by both MST methods, event-log compression, budgeted
-upgrade selection, analytics matrix-chain ordering, history comparison, and
+upgrade selection, analytics matrix-chain ordering, history comparison,
 frequency-weighted record lookup, equipment selection with all three Branch
-and Bound strategies, and an inspection tour through service locations.
+and Bound strategies, an inspection tour through service locations, checkpoint
+throughput planning, and officer-to-lane assignment.
 Planning priority and route cost do not bypass screening: screening policy is
 outside these algorithms and remains mandatory for every passenger.
 

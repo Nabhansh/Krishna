@@ -170,3 +170,28 @@ verified.
 The remaining 7 of 34 mandatory algorithms are not included in the verified
 set above. This status does not claim that all mandatory algorithms or the
 entire product are complete.
+
+## Ford-Fulkerson and bipartite matching — implementation added; verification pending
+
+Added Edmonds-Karp Ford-Fulkerson maximum flow with per-input-edge flow
+reporting, and DFS augmenting-path maximum bipartite matching. Added
+AirportOperations entry points for checkpoint throughput and officer-to-lane
+assignment, focused unit/integration tests, runnable examples, CMake targets,
+and complexity/correctness documentation.
+
+These two algorithms are not included in the verified algorithm or test
+totals above. Verification counts will be updated only after the full build,
+complete test suite, and both examples succeed.
+
+Verification attempt:
+
+- Debug CMake configuration succeeded.
+- The clean build stopped before any project source compiled: GCC 16's
+  `/usr/include/c++/16/x86_64-redhat-linux/bits/c++config.h` includes the
+  unavailable `bits/wordsize.h`.
+- CTest could not run because `project31_tests` was not built.
+- Neither example executable was produced, so neither could be run.
+- `git diff --check` passed.
+
+The latest verified baseline remains 27/34 algorithms and 101/101 tests;
+this unsuccessful environment-level build does not change those counts.

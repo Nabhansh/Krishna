@@ -135,4 +135,31 @@ AirportOperations::planAirportInspectionTour(
     );
 }
 
+algorithms::FordFulkersonResult AirportOperations::planCheckpointFlow(
+    std::size_t checkpointCount,
+    const std::vector<algorithms::CapacityEdge>& connections,
+    std::size_t entryCheckpoint,
+    std::size_t exitCheckpoint
+) {
+    return algorithms::fordFulkersonMaxFlow(
+        checkpointCount,
+        connections,
+        entryCheckpoint,
+        exitCheckpoint
+    );
+}
+
+algorithms::MaximumBipartiteMatchingResult
+AirportOperations::assignOfficersToScreeningLanes(
+    std::size_t officerCount,
+    std::size_t laneCount,
+    const std::vector<algorithms::BipartiteEdge>& allowedAssignments
+) {
+    return algorithms::maximumBipartiteMatching(
+        officerCount,
+        laneCount,
+        allowedAssignments
+    );
+}
+
 } // namespace project31

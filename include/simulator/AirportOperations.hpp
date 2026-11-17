@@ -18,6 +18,8 @@
 #include "algorithms/branch_bound/LifoBranchAndBound.hpp"
 #include "algorithms/branch_bound/LeastCostBranchAndBound.hpp"
 #include "algorithms/dynamic_programming/BoundedTravellingSalesperson.hpp"
+#include "algorithms/flow/FordFulkerson.hpp"
+#include "algorithms/flow/MaximumBipartiteMatching.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -99,6 +101,18 @@ public:
     planAirportInspectionTour(
         const std::vector<std::vector<std::optional<std::int64_t>>>& travelCosts,
         std::size_t startingLocation = 0
+    );
+    [[nodiscard]] static algorithms::FordFulkersonResult planCheckpointFlow(
+        std::size_t checkpointCount,
+        const std::vector<algorithms::CapacityEdge>& connections,
+        std::size_t entryCheckpoint,
+        std::size_t exitCheckpoint
+    );
+    [[nodiscard]] static algorithms::MaximumBipartiteMatchingResult
+    assignOfficersToScreeningLanes(
+        std::size_t officerCount,
+        std::size_t laneCount,
+        const std::vector<algorithms::BipartiteEdge>& allowedAssignments
     );
 };
 

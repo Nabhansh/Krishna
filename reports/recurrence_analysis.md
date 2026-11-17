@@ -206,3 +206,49 @@ edges with empty optionals (not zero), checks additions for overflow, and
 returns no result if no Hamiltonian cycle through the specified start exists.
 The explicit 18-vertex cap limits the DP to about 4.7 million states. For one
 vertex, the tour is `[s,s]` with zero cost.
+
+## Ford-Fulkerson Maximum Flow (Edmonds-Karp)
+
+For each BFS augmenting path `P` in the residual graph, let
+`delta = min residualCapacity(e)` over edges on `P`. Update every forward
+residual edge by `-delta` and its paired reverse edge by `+delta`:
+
+```text
+residual(e)       = residual(e) - delta
+residual(reverse) = residual(reverse) + delta
+maximumFlow       = maximumFlow + delta
+```
+
+The BFS path is shortest in number of edges. Reverse residual edges allow the
+search to undo a previous assignment and use a different route, preserving
+optimality. Edmonds-Karp performs O(VE) augmentations; each BFS and path
+update costs O(E), so the worst-case time is O(VE^2) and residual storage is
+O(V+E). Each original directed edge has its own residual pair, including
+parallel edges. Per-edge flow is original capacity minus its forward residual
+capacity. The implementation validates terminals/endpoints and nonnegative
+capacities and checks flow accumulation for `int64_t` overflow. Equal source
+and sink is defined to return zero flow.
+
+## Maximum Bipartite Matching (DFS augmenting paths)
+
+Let `M[r]` be the officer currently matched to lane `r`, if any. For each
+unmatched officer, DFS explores allowed officer-to-lane edges; if a lane is
+occupied, it recursively searches for an alternate lane for its current
+officer:
+
+```text
+augment(officer):
+    for each allowed lane not already visited in this search:
+        mark lane visited
+        if lane is free or augment(currentOfficer(lane)):
+            match lane to officer
+            return success
+    return failure
+```
+
+Every successful DFS adds one pair and updates the alternating path. When no
+augmenting path exists, Berge's augmenting-path theorem says the matching is
+maximum. With `L` officers and `E` allowed edges, at most `L` searches each
+take O(E), for O(L E) time. Adjacency, matching, and search state use
+O(L+R+E) storage, plus O(L) recursive stack depth. Duplicate edges do not
+change the result; stable input traversal makes tie outcomes deterministic.

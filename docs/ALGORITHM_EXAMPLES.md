@@ -125,3 +125,45 @@ matrix entries denote missing directed routes; zero is a valid route cost.
 Asymmetric nonnegative costs are supported. The solver returns no tour for
 infeasible route networks and supports at most 18 locations to bound its
 `O(n 2^n)` memory and `O(n^2 2^n)` runtime.
+
+## Checkpoint throughput and officer-to-lane assignment
+
+```sh
+cmake --build build --target ford_fulkerson_example bipartite_matching_example
+./build/ford_fulkerson_example
+./build/bipartite_matching_example
+```
+
+The flow example models directed capacity between four screening checkpoints.
+It reports a maximum throughput of 12 units and the flow on each connection.
+Ford-Fulkerson with BFS finds augmenting paths in the residual network;
+per-edge output includes the original capacity and its final assigned flow.
+This is a capacity-planning result, not a shortest route, a minimum spanning
+tree, or a change to screening rules.
+
+Example flow output:
+
+```text
+Maximum checkpoint throughput: 12
+Connection flows:
+  0 -> 1: 7/8
+  0 -> 2: 5/5
+  1 -> 2: 2/3
+  1 -> 3: 5/5
+  2 -> 3: 7/7
+```
+
+The matching example gives three officers their compatible lanes. It reports
+three assignments, including a rerouting along an augmenting path to avoid
+leaving an officer unmatched. Matching only represents compatibility and
+does not relax officer qualifications, lane requirements, or passenger
+screening policies.
+
+Example matching output:
+
+```text
+Officer-to-lane assignments (3):
+  Officer 0 -> Lane 1
+  Officer 1 -> Lane 0
+  Officer 2 -> Lane 2
+```
