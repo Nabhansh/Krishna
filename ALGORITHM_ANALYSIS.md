@@ -60,13 +60,39 @@ removes at least one candidate per comparison and verifies the survivor.
 Strassen pads rectangular compatible matrices to a power-of-two square and
 uses classical multiplication for small subproblems.
 
+## Dynamic programming
+
+| Algorithm | Airport use | Time | Space |
+|---|---|---:|---:|
+| 0/1 Knapsack | Choose operational equipment upgrades within a fixed budget | O(nW) | O(nW) |
+| Matrix Chain Multiplication | Minimize scalar operations in an analytics matrix pipeline | O(n^3) | O(n^2) |
+
+For Knapsack, `n` is the item count and `W` is the integer capacity. The DP
+table stores the best value using the first `i` items at capacity `c`; a
+separate previous-item row ensures each item is used at most once.
+Reconstruction walks the table backward and returns original zero-based item
+indices. The implementation rejects negative input values and capacities,
+mismatched arrays, table-size overflow, and an unrepresentable result.
+
+For Matrix Chain Multiplication, `n` is the number of matrices. Each DP cell
+stores the minimum cost for a contiguous subchain and a split table records
+the selected parenthesization. Checked arithmetic rejects chains whose costs
+cannot be represented by `int64_t`. Empty dimension input is an empty chain;
+one matrix has zero multiplication cost.
+
+The airport facade exposes the Knapsack choice as budgeted upgrade planning
+and Matrix Chain as analytics-pipeline ordering. These outputs inform resource
+planning only and do not alter mandatory passenger screening.
+
 ## Airport application and safety
 
 `AirportOperations` is the simulator-facing planning/compression facade.
 Its examples show appointment selection, lane allocation, route planning,
-infrastructure planning by both MST methods, and event-log compression.
+infrastructure planning by both MST methods, event-log compression, budgeted
+upgrade selection, and analytics matrix-chain ordering.
 Planning priority and route cost do not bypass screening: screening policy is
 outside these algorithms and remains mandatory for every passenger.
 
 See `docs/ALGORITHM_EXAMPLES.md` for executable examples and commands. The
-greedy demonstration can be run with `./build/project31_greedy_example`.
+greedy demonstration can be run with `./build/project31_greedy_example`; the
+DP demonstration can be run with `./build/project31_dynamic_programming_example`.

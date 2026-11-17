@@ -6,7 +6,10 @@
 #include "algorithms/greedy/IntervalPartitioning.hpp"
 #include "algorithms/greedy/Kruskal.hpp"
 #include "algorithms/greedy/Prim.hpp"
+#include "algorithms/dynamic_programming/Knapsack.hpp"
+#include "algorithms/dynamic_programming/MatrixChainMultiplication.hpp"
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <vector>
@@ -36,6 +39,14 @@ public:
     );
     [[nodiscard]] static algorithms::HuffmanCodec eventLogCodec(
         const std::string& eventLog
+    );
+    [[nodiscard]] static algorithms::KnapsackResult optimizeAirportUpgrades(
+        const std::vector<std::int64_t>& resourceWeights,
+        const std::vector<std::int64_t>& operationalValues,
+        std::int64_t budget
+    );
+    [[nodiscard]] static algorithms::MatrixChainResult planAnalyticsMultiplication(
+        const std::vector<std::int64_t>& matrixDimensions
     );
 };
 

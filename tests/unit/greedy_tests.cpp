@@ -215,6 +215,16 @@ TEST(AirportOperationsTests, ConnectsGreedyAlgorithmsToOperationalTasks) {
 
     const auto codec = AirportOperations::eventLogCodec("arrival screened");
     EXPECT_EQ(codec.decode(codec.encode("screened")), "screened");
+
+    const auto upgrades =
+        AirportOperations::optimizeAirportUpgrades({4, 3, 5}, {8, 6, 10}, 8);
+    EXPECT_EQ(upgrades.maximumValue, 16);
+    EXPECT_EQ(upgrades.selectedIndices, (std::vector<std::size_t>{0, 1}));
+
+    const auto analytics =
+        AirportOperations::planAnalyticsMultiplication({10, 30, 5, 60});
+    EXPECT_EQ(analytics.minimumCost, 4500);
+    EXPECT_EQ(analytics.parenthesization, "(A1 x (A2 x A3))");
 }
 
 } // namespace project31

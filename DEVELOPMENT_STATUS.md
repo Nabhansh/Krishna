@@ -71,7 +71,7 @@ Verified on the current branch as confirmed for commit `a8811b5`:
 - All 32 GoogleTests passed.
 - The Batch A example ran successfully.
 
-## Batch B — source/tests added; verification blocked
+## Batch B — implemented; current baseline confirmed
 
 Implemented six independent greedy algorithm modules with separate headers
 and sources:
@@ -89,17 +89,39 @@ and sources:
   overflow, and operational-facade cases.
 - Greedy correctness, complexity, and airport mapping documentation.
 
-CMake configuration succeeded. The GCC build was attempted but cannot compile
-standard headers in the current environment (`bits/wordsize.h` is unavailable
-through the compiler's configured system include paths). Consequently none of
-the Batch B sources, tests, or demonstration have compiled/run; these
-algorithms must not yet be treated as complete/verified.
+The current branch's 49-test baseline was confirmed by the project owner. The
+pre-existing `build/project31_tests` executable was also run in this session:
+all 49 tests passed. A fresh build is still required to validate source edits
+against the current system toolchain.
 
-The confirmed baseline remains 32 passing tests. The 17 new tests are authored
-but unrun, so there is no verified post-Batch-B passing-test count.
+## Dynamic programming — Knapsack and Matrix Chain implemented; verification blocked
 
-The requested Batch B build/test gate is outstanding. No dynamic-programming
-work has started.
+Implemented:
 
-Dynamic programming and later categories remain deferred until Batch B is
-compiled and all tests pass.
+- Bottom-up 0/1 Knapsack with a full DP table, selected-item reconstruction,
+  input checks, and value/table-size overflow guards.
+- Bottom-up Matrix Chain Multiplication with a split table, optimal
+  parenthesization reconstruction, dimension checks, and checked cost
+  arithmetic.
+- Airport operations facade methods for fixed-budget equipment upgrade
+  selection and analytics matrix multiplication ordering.
+- Seven focused unit tests, including small-instance brute-force Knapsack
+  comparisons, boundaries, invalid inputs, and overflow cases; the existing
+  airport integration test also covers both facade methods.
+- A runnable `project31_dynamic_programming_example` target and recurrence,
+  complexity, and airport-mapping documentation.
+
+Verification status:
+
+- Debug CMake configure succeeded.
+- The requested build failed before project sources or tests could compile:
+  GCC 16's configured include paths reference `bits/wordsize.h`, which is
+  unavailable in this environment. No alternate C++ compiler is installed.
+- The already-built baseline test executable passed 49/49 tests, but it does
+  not include the new DP tests or sources.
+- Consequently the seven new unit tests, updated integration test, and new
+  example have not been compiled or run. The two algorithms are implemented
+  but must not be marked verified until a fresh build and full test run pass.
+
+Further dynamic-programming algorithms remain deferred until this verification
+gate is cleared.

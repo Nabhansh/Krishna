@@ -35,3 +35,15 @@ flight screening intervals to lanes, computes nonnegative terminal-route
 costs, compares Prim/Kruskal infrastructure forests, and round-trips an event
 log with Huffman coding. Infrastructure weights represent planning cost and
 route weights represent travel minutes; they are not screening risk scores.
+
+## Dynamic-programming airport planning
+
+```sh
+cmake --build build --target project31_dynamic_programming_example
+./build/project31_dynamic_programming_example
+```
+
+This demonstration chooses airport equipment upgrades under a fixed resource
+budget with 0/1 Knapsack and selects the least-cost multiplication order for
+an operational analytics matrix pipeline. The selected upgrades are planning
+recommendations; they do not affect passenger screening requirements.

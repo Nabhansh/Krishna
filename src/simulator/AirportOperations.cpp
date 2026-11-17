@@ -42,4 +42,18 @@ algorithms::HuffmanCodec AirportOperations::eventLogCodec(const std::string& eve
     return algorithms::HuffmanCodec::fromText(eventLog);
 }
 
+algorithms::KnapsackResult AirportOperations::optimizeAirportUpgrades(
+    const std::vector<std::int64_t>& resourceWeights,
+    const std::vector<std::int64_t>& operationalValues,
+    std::int64_t budget
+) {
+    return algorithms::solveKnapsack01(resourceWeights, operationalValues, budget);
+}
+
+algorithms::MatrixChainResult AirportOperations::planAnalyticsMultiplication(
+    const std::vector<std::int64_t>& matrixDimensions
+) {
+    return algorithms::matrixChainMultiplication(matrixDimensions);
+}
+
 } // namespace project31
