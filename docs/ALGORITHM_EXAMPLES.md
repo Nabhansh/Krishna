@@ -167,3 +167,47 @@ Officer-to-lane assignments (3):
   Officer 1 -> Lane 0
   Officer 2 -> Lane 2
 ```
+
+## Maintenance-cycle scheduling and operational-log search
+
+```sh
+cmake --build build --target crt_scheduling_example string_matching_example
+./build/crt_scheduling_example
+./build/string_matching_example
+```
+
+The scheduling example combines inspection cycles at day offsets 3 modulo 7
+and 5 modulo 9. The next shared time is day 59, and the complete schedule
+repeats every 63 days:
+
+```text
+Inspection and calibration cycles next align at day 59 (combined cycle 63 days).
+```
+
+CRT accepts positive pairwise-coprime periods and signed offsets; the returned
+solution is normalized into the combined period. It rejects non-coprime
+periods and any combined modulus that cannot fit in `int64_t`. An empty
+schedule system has identity result `0 mod 1`.
+
+The log example searches byte-oriented records for flight code `FLT-217`.
+Naive matching and Rabin-Karp return the same zero-based offsets:
+
+```text
+Naive match offsets: 8 39
+Rabin-Karp match offsets: 8 39
+```
+
+Both matchers include overlaps and treat an empty pattern as matching every
+boundary. They search the exact bytes in `std::string`; they do not decode
+Unicode. Rabin-Karp verifies equality after hash matches to rule out collision
+false positives.
+
+The benchmark compares results before timing:
+
+```sh
+cmake --build build --target project31_string_matching_benchmark
+./build/project31_string_matching_benchmark
+```
+
+Datasets cover small, medium, large, and adversarial periodic text. A row is
+reported only if both algorithms produce identical match positions.

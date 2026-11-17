@@ -162,4 +162,25 @@ AirportOperations::assignOfficersToScreeningLanes(
     );
 }
 
+algorithms::ChineseRemainderResult AirportOperations::reconcileMaintenanceSchedule(
+    const std::vector<std::int64_t>& cycleOffsets,
+    const std::vector<std::int64_t>& cyclePeriods
+) {
+    return algorithms::solveChineseRemainderTheorem(cycleOffsets, cyclePeriods);
+}
+
+std::vector<std::size_t> AirportOperations::findFlightCodesInLogNaive(
+    const std::string& log,
+    const std::string& flightCode
+) {
+    return algorithms::naiveStringMatch(log, flightCode);
+}
+
+std::vector<std::size_t> AirportOperations::findFlightCodesInLogRabinKarp(
+    const std::string& log,
+    const std::string& flightCode
+) {
+    return algorithms::rabinKarpStringMatch(log, flightCode);
+}
+
 } // namespace project31

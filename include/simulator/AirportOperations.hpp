@@ -20,6 +20,9 @@
 #include "algorithms/dynamic_programming/BoundedTravellingSalesperson.hpp"
 #include "algorithms/flow/FordFulkerson.hpp"
 #include "algorithms/flow/MaximumBipartiteMatching.hpp"
+#include "algorithms/number_theory/ChineseRemainderTheorem.hpp"
+#include "algorithms/string_matching/NaiveStringMatching.hpp"
+#include "algorithms/string_matching/RabinKarp.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -113,6 +116,19 @@ public:
         std::size_t officerCount,
         std::size_t laneCount,
         const std::vector<algorithms::BipartiteEdge>& allowedAssignments
+    );
+    [[nodiscard]] static algorithms::ChineseRemainderResult
+    reconcileMaintenanceSchedule(
+        const std::vector<std::int64_t>& cycleOffsets,
+        const std::vector<std::int64_t>& cyclePeriods
+    );
+    [[nodiscard]] static std::vector<std::size_t> findFlightCodesInLogNaive(
+        const std::string& log,
+        const std::string& flightCode
+    );
+    [[nodiscard]] static std::vector<std::size_t> findFlightCodesInLogRabinKarp(
+        const std::string& log,
+        const std::string& flightCode
     );
 };
 

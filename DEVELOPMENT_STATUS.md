@@ -157,41 +157,42 @@ verified.
 
 ## Latest verified development state
 
-- 27 of 34 mandatory algorithms implemented and verified.
-- All 101 GoogleTests passed, including airport integration tests.
+- 32 of 34 mandatory algorithms implemented and verified.
+- All 133 GoogleTests passed, including airport integration tests.
 - FIFO, LIFO, and Least-Cost Branch and Bound verified.
 - Bounded Travelling Salesperson using Held-Karp dynamic programming verified.
-- Both new examples executed successfully.
+- Ford-Fulkerson (Edmonds-Karp) and Maximum Bipartite Matching verified.
+- Chinese Remainder Theorem, Naive String Matching, and Rabin-Karp verified.
+- CRT and string-matching examples executed successfully.
+- String-matching benchmark completed successfully; Naive and Rabin-Karp
+  returned identical match positions.
+- Clean CMake build passed on Fedora.
+- Complete CTest suite passed, 133/133.
+- `git diff --check` passed.
 - Current branch: `milestone-3-divide-greedy`.
 - Latest commit before this batch: `047cef0`.
 
-## Remaining algorithms — not verified
+## Remaining algorithms — not yet implemented and verified
 
-The remaining 7 of 34 mandatory algorithms are not included in the verified
-set above. This status does not claim that all mandatory algorithms or the
-entire product are complete.
+Exactly two of the 34 mandatory algorithms remain:
 
-## Ford-Fulkerson and bipartite matching — implementation added; verification pending
+- Finite Automaton String Matching.
+- Knuth-Morris-Pratt (KMP).
 
-Added Edmonds-Karp Ford-Fulkerson maximum flow with per-input-edge flow
-reporting, and DFS augmenting-path maximum bipartite matching. Added
-AirportOperations entry points for checkpoint throughput and officer-to-lane
-assignment, focused unit/integration tests, runnable examples, CMake targets,
-and complexity/correctness documentation.
+## Chinese Remainder Theorem and string matching — complete and verified
 
-These two algorithms are not included in the verified algorithm or test
-totals above. Verification counts will be updated only after the full build,
-complete test suite, and both examples succeed.
+Implemented the Chinese Remainder Theorem utility, Naive String Matching, and
+Rabin-Karp String Matching. Added AirportOperations APIs for periodic
+maintenance scheduling and flight-code log search, focused unit and
+integration tests, runnable examples, and a benchmark comparing small,
+medium, large, and adversarial periodic inputs. Both matchers were checked to
+return identical positions before timing.
 
-Verification attempt:
+Successful Fedora host verification:
 
-- Debug CMake configuration succeeded.
-- The clean build stopped before any project source compiled: GCC 16's
-  `/usr/include/c++/16/x86_64-redhat-linux/bits/c++config.h` includes the
-  unavailable `bits/wordsize.h`.
-- CTest could not run because `project31_tests` was not built.
-- Neither example executable was produced, so neither could be run.
+- Clean CMake build passed.
+- Complete CTest suite passed, 133/133.
+- CRT scheduling example passed.
+- String-matching example passed.
+- String-matching benchmark passed with matching result positions.
 - `git diff --check` passed.
-
-The latest verified baseline remains 27/34 algorithms and 101/101 tests;
-this unsuccessful environment-level build does not change those counts.

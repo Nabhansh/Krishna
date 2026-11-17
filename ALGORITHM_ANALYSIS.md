@@ -85,6 +85,38 @@ allowed edges are harmless and preserve deterministic input-order traversal.
 The implementation takes O(L E) time and O(L + R + E) storage, where `L` and
 `R` are partition sizes and `E` is the number of allowed assignment edges.
 
+## Number theory
+
+| Algorithm | Airport use | Time | Auxiliary space |
+|---|---|---:|---:|
+| Chinese Remainder Theorem | Reconcile periodic inspection and maintenance cycles | O(k log^2 M) | O(1) |
+
+For `k` congruences and combined modulus bounded by `M`, CRT combines one
+congruence at a time. It requires positive, pairwise-coprime moduli and
+returns the normalized solution in `[0, M)`. Negative residues are normalized
+with signed remainder. Each merge uses the extended Euclidean algorithm to
+find the inverse of the accumulated modulus modulo the next modulus. Modular
+multiplication uses add-and-double arithmetic, avoiding wide-integer compiler
+extensions and overflow-prone products. Combined-modulus overflow raises an
+overflow error. The empty system returns the identity solution `0 mod 1`.
+
+## String matching
+
+| Algorithm | Airport use | Worst-case time | Auxiliary space |
+|---|---|---:|---:|
+| Naive String Matching | Find flight codes or event markers in operational logs | O(nm) | O(1), excluding output |
+| Rabin-Karp | Search log records with a rolling hash and collision verification | O(nm); expected O(n+m) | O(1), excluding output |
+
+Both functions accept text then pattern, return every zero-based start index,
+preserve overlaps, and compare `std::string` bytes (not Unicode code points).
+An empty pattern matches all `n+1` boundaries, while a longer-than-text
+pattern returns no matches. Naive matching compares each candidate window
+directly. Rabin-Karp rolls a fixed-base modular hash from one window to the
+next and verifies byte equality at every hash match, so collisions cannot
+produce false matches. The deterministic hash operations use bounded
+64-bit intermediates. Rabin-Karp is expected linear for typical inputs; with
+many collisions/verified candidates its worst case is O(nm).
+
 ## Backtracking
 
 | Algorithm | Airport use | Worst-case time | Auxiliary space |
@@ -194,7 +226,8 @@ infrastructure planning by both MST methods, event-log compression, budgeted
 upgrade selection, analytics matrix-chain ordering, history comparison,
 frequency-weighted record lookup, equipment selection with all three Branch
 and Bound strategies, an inspection tour through service locations, checkpoint
-throughput planning, and officer-to-lane assignment.
+throughput planning, officer-to-lane assignment, recurring maintenance
+reconciliation, and flight-code/event-marker search in operational logs.
 Planning priority and route cost do not bypass screening: screening policy is
 outside these algorithms and remains mandatory for every passenger.
 

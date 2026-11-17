@@ -19,6 +19,7 @@ add_library(project31_core
     src/algorithms/ActivitySelection.cpp
     src/algorithms/BellmanFord.cpp
     src/algorithms/BoundedTravellingSalesperson.cpp
+    src/algorithms/ChineseRemainderTheorem.cpp
     src/algorithms/FifoBranchAndBound.cpp
     src/algorithms/CelebrityProblem.cpp
     src/algorithms/ClassicalMatrixMultiplication.cpp
@@ -31,6 +32,7 @@ add_library(project31_core
     src/algorithms/LifoBranchAndBound.cpp
     src/algorithms/LeastCostBranchAndBound.cpp
     src/algorithms/MaximumBipartiteMatching.cpp
+    src/algorithms/NaiveStringMatching.cpp
     src/algorithms/Knapsack.cpp
     src/algorithms/Kruskal.cpp
     src/algorithms/LongestCommonSubsequence.cpp
@@ -41,6 +43,7 @@ add_library(project31_core
     src/algorithms/MergeSort.cpp
     src/algorithms/Prim.cpp
     src/algorithms/QuickSort.cpp
+    src/algorithms/RabinKarp.cpp
     src/algorithms/StrassenMatrixMultiplication.cpp
     src/algorithms/SubsetSum.cpp
     src/simulator/QueueManager.cpp
@@ -80,6 +83,18 @@ target_compile_options(bipartite_matching_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 
+add_executable(crt_scheduling_example examples/crt_scheduling_example.cpp)
+target_link_libraries(crt_scheduling_example PRIVATE project31_core)
+target_compile_options(crt_scheduling_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(string_matching_example examples/string_matching_example.cpp)
+target_link_libraries(string_matching_example PRIVATE project31_core)
+target_compile_options(string_matching_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
 add_executable(project31
     src/main.cpp
     src/simulator/CommandLineInterface.cpp
@@ -115,8 +130,11 @@ if(BUILD_TESTING)
         tests/unit/least_cost_branch_bound_tests.cpp
         tests/unit/bounded_tsp_tests.cpp
         tests/unit/flow_algorithms_tests.cpp
+        tests/unit/chinese_remainder_theorem_tests.cpp
+        tests/unit/string_matching_tests.cpp
         tests/integration/airport_tests.cpp
         tests/integration/flow_operations_tests.cpp
+        tests/integration/number_theory_string_matching_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
     target_compile_options(project31_tests PRIVATE
@@ -179,6 +197,13 @@ if(PROJECT31_BUILD_BENCHMARKS)
     add_executable(project31_sorting_benchmark benchmarks/sorting_benchmark.cpp)
     target_link_libraries(project31_sorting_benchmark PRIVATE project31_core)
     target_compile_options(project31_sorting_benchmark PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+    )
+    add_executable(project31_string_matching_benchmark
+        benchmarks/string_matching_benchmark.cpp
+    )
+    target_link_libraries(project31_string_matching_benchmark PRIVATE project31_core)
+    target_compile_options(project31_string_matching_benchmark PRIVATE
         $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
     )
 endif()

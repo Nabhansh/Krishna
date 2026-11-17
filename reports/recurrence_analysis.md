@@ -252,3 +252,58 @@ maximum. With `L` officers and `E` allowed edges, at most `L` searches each
 take O(E), for O(L E) time. Adjacency, matching, and search state use
 O(L+R+E) storage, plus O(L) recursive stack depth. Duplicate edges do not
 change the result; stable input traversal makes tie outcomes deterministic.
+
+## Chinese Remainder Theorem
+
+Maintain a current solution `x` modulo accumulated modulus `M`. To add
+`x = a (mod m)`, first require `gcd(M,m)=1`; then solve for the step `t`:
+
+```text
+t = ((a - x) * inverse(M mod m)) mod m
+x = x + M * t
+M = M * m
+```
+
+The inverse is computed with the extended Euclidean algorithm. Residues are
+normalized before subtraction, and modular multiplication uses repeated
+add-and-double with conditional modular addition, so no intermediate product
+exceeds the signed result range. Since `0 <= t < m` and `0 <= x < M`, the
+updated `x` is in `[0,M*m)`; the combined modulus is checked before updating.
+The result is the unique normalized solution modulo the product when moduli
+are pairwise coprime. The empty system returns `(0,1)`. With `k` constraints
+and maximum intermediate modulus `M`, this implementation takes
+`O(k log^2 M)` time and constant auxiliary space.
+
+## Naive String Matching
+
+For text length `n` and nonempty pattern length `m`, examine each valid
+starting offset and compare bytes until a mismatch or full match:
+
+```text
+for s = 0 .. n-m:
+    compare text[s .. s+m) with pattern[0 .. m)
+```
+
+Every successful comparison reports `s`, then scanning advances by one so
+overlaps are included. Direct comparison costs `O(m)` at each of at most
+`n-m+1` offsets, or `O(nm)` worst-case time with `O(1)` auxiliary space,
+excluding returned positions. An empty pattern matches all boundaries from
+zero through `n`; a pattern longer than the text has no matches.
+
+## Rabin-Karp String Matching
+
+Hash the pattern and first length-`m` text window. For each next window,
+remove the outgoing byte's highest-place contribution and append the new byte:
+
+```text
+H_next = ((H_current - outgoing * base^(m-1)) * base + incoming) mod prime
+```
+
+The implementation uses a fixed base and prime modulus, with bounded
+64-bit arithmetic. A matching hash is always confirmed by byte comparison,
+so collisions affect runtime but never correctness. Rolling costs `O(1)` per
+window after the initial `O(m)` hashes. Expected runtime is `O(n+m)` for
+well-distributed hashes and typical text; in the collision-heavy worst case,
+verification makes it `O(nm)`. Auxiliary space is `O(1)`, excluding matches.
+Empty-pattern boundaries, overlap behavior, and byte indexing are identical
+to Naive String Matching.
