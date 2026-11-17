@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/Airport.hpp"
+#include "simulator/AirportScenario.hpp"
 
 #include <iosfwd>
 #include <optional>
@@ -24,10 +25,17 @@ private:
     void findPassenger();
     void listPassengersByPriority();
     void listPassengerIdsSorted();
+    void runBuiltInScenario();
+    void runUserCsvScenario();
+    void runStaffingEvaluation();
+    void exportLastScenario();
+    void displayScenarioComparison(const ScenarioComparison& comparison) const;
 
     std::istream& input_;
     std::ostream& output_;
     Airport airport_;
+    std::optional<ScenarioComparison> lastScenario_;
+    std::optional<AirportScenario> lastScenarioInput_;
 };
 
 } // namespace project31

@@ -16,13 +16,85 @@ add_library(project31_core
     src/core/SecurityLane.cpp
     src/core/SecurityOfficer.cpp
     src/algorithms/BinarySearch.cpp
+    src/algorithms/ActivitySelection.cpp
+    src/algorithms/BellmanFord.cpp
+    src/algorithms/BoundedTravellingSalesperson.cpp
+    src/algorithms/ChineseRemainderTheorem.cpp
+    src/algorithms/FifoBranchAndBound.cpp
+    src/algorithms/CelebrityProblem.cpp
+    src/algorithms/ClassicalMatrixMultiplication.cpp
+    src/algorithms/Dijkstra.cpp
+    src/algorithms/FastExponentiation.cpp
+    src/algorithms/FloydWarshall.cpp
+    src/algorithms/FordFulkerson.cpp
+    src/algorithms/FiniteAutomatonStringMatching.cpp
+    src/algorithms/HuffmanCoding.cpp
+    src/algorithms/IntervalPartitioning.cpp
+    src/algorithms/LifoBranchAndBound.cpp
+    src/algorithms/LeastCostBranchAndBound.cpp
+    src/algorithms/MaximumBipartiteMatching.cpp
+    src/algorithms/NaiveStringMatching.cpp
+    src/algorithms/Knapsack.cpp
+    src/algorithms/KnuthMorrisPratt.cpp
+    src/algorithms/Kruskal.cpp
+    src/algorithms/LongestCommonSubsequence.cpp
+    src/algorithms/MatrixChainMultiplication.cpp
+    src/algorithms/MaximumSubarray.cpp
+    src/algorithms/NQueens.cpp
+    src/algorithms/OptimalBinarySearchTree.cpp
     src/algorithms/MergeSort.cpp
+    src/algorithms/Prim.cpp
     src/algorithms/QuickSort.cpp
+    src/algorithms/RabinKarp.cpp
+    src/algorithms/StrassenMatrixMultiplication.cpp
+    src/algorithms/SubsetSum.cpp
     src/simulator/QueueManager.cpp
+    src/simulator/AirportScenario.cpp
+    src/simulator/AirportOperations.cpp
     src/simulator/QueueWorkloadIndex.cpp
 )
 target_include_directories(project31_core PUBLIC include)
 target_compile_options(project31_core PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(least_cost_branch_bound_example
+    examples/least_cost_branch_bound_example.cpp
+)
+target_link_libraries(least_cost_branch_bound_example PRIVATE project31_core)
+target_compile_options(least_cost_branch_bound_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(bounded_tsp_example examples/bounded_tsp_example.cpp)
+target_link_libraries(bounded_tsp_example PRIVATE project31_core)
+target_compile_options(bounded_tsp_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(ford_fulkerson_example examples/ford_fulkerson_example.cpp)
+target_link_libraries(ford_fulkerson_example PRIVATE project31_core)
+target_compile_options(ford_fulkerson_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(bipartite_matching_example
+    examples/bipartite_matching_example.cpp
+)
+target_link_libraries(bipartite_matching_example PRIVATE project31_core)
+target_compile_options(bipartite_matching_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(crt_scheduling_example examples/crt_scheduling_example.cpp)
+target_link_libraries(crt_scheduling_example PRIVATE project31_core)
+target_compile_options(crt_scheduling_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(string_matching_example examples/string_matching_example.cpp)
+target_link_libraries(string_matching_example PRIVATE project31_core)
+target_compile_options(string_matching_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 
@@ -47,25 +119,120 @@ if(BUILD_TESTING)
     endif()
 
     add_executable(project31_tests
+        src/simulator/CommandLineInterface.cpp
         tests/unit/passenger_tests.cpp
+        tests/unit/airport_scheduling_tests.cpp
         tests/unit/sorting_tests.cpp
         tests/unit/searching_tests.cpp
         tests/unit/index_tests.cpp
+        tests/unit/divide_conquer_tests.cpp
+        tests/unit/greedy_tests.cpp
+        tests/unit/dynamic_programming_tests.cpp
+        tests/unit/dynamic_programming_batch2_tests.cpp
+        tests/unit/graph_algorithms_tests.cpp
+        tests/unit/backtracking_tests.cpp
+        tests/unit/branch_bound_tests.cpp
+        tests/unit/least_cost_branch_bound_tests.cpp
+        tests/unit/bounded_tsp_tests.cpp
+        tests/unit/flow_algorithms_tests.cpp
+        tests/unit/chinese_remainder_theorem_tests.cpp
+        tests/unit/string_matching_tests.cpp
+        tests/unit/string_matching_batch2_tests.cpp
         tests/integration/airport_tests.cpp
+        tests/integration/flow_operations_tests.cpp
+        tests/integration/number_theory_string_matching_tests.cpp
+        tests/integration/airport_scenario_tests.cpp
+        tests/integration/airport_scheduling_tests.cpp
+        tests/regression/airport_scenario_regression_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
     target_compile_options(project31_tests PRIVATE
         $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
     )
     include(GoogleTest)
-    gtest_discover_tests(project31_tests)
+    gtest_discover_tests(
+        project31_tests
+        PROPERTIES WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
 endif()
+
+add_executable(project31_batch_a_example examples/batch_a_example.cpp)
+target_link_libraries(project31_batch_a_example PRIVATE project31_core)
+target_compile_options(project31_batch_a_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(project31_greedy_example examples/greedy_example.cpp)
+target_link_libraries(project31_greedy_example PRIVATE project31_core)
+target_compile_options(project31_greedy_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(project31_dynamic_programming_example
+    examples/dynamic_programming_example.cpp
+)
+target_link_libraries(project31_dynamic_programming_example PRIVATE project31_core)
+target_compile_options(project31_dynamic_programming_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(project31_dynamic_programming_batch2_example
+    examples/dynamic_programming_batch2_example.cpp
+)
+target_link_libraries(project31_dynamic_programming_batch2_example PRIVATE project31_core)
+target_compile_options(project31_dynamic_programming_batch2_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(project31_graph_algorithms_example
+    examples/graph_algorithms_example.cpp
+)
+target_link_libraries(project31_graph_algorithms_example PRIVATE project31_core)
+target_compile_options(project31_graph_algorithms_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(backtracking_example examples/backtracking_example.cpp)
+target_link_libraries(backtracking_example PRIVATE project31_core)
+target_compile_options(backtracking_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(branch_bound_example examples/branch_bound_example.cpp)
+target_link_libraries(branch_bound_example PRIVATE project31_core)
+target_compile_options(branch_bound_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(project31_airport_scenarios examples/airport_scenarios.cpp)
+target_link_libraries(project31_airport_scenarios PRIVATE project31_core)
+target_compile_options(project31_airport_scenarios PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
 
 option(PROJECT31_BUILD_BENCHMARKS "Build sorting performance benchmarks" ON)
 if(PROJECT31_BUILD_BENCHMARKS)
     add_executable(project31_sorting_benchmark benchmarks/sorting_benchmark.cpp)
     target_link_libraries(project31_sorting_benchmark PRIVATE project31_core)
     target_compile_options(project31_sorting_benchmark PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+    )
+    add_executable(project31_string_matching_benchmark
+        benchmarks/string_matching_benchmark.cpp
+    )
+    target_link_libraries(project31_string_matching_benchmark PRIVATE project31_core)
+    target_compile_options(project31_string_matching_benchmark PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+    )
+    add_executable(
+        project31_airport_scenario_benchmark
+        benchmarks/airport_scenario_benchmark.cpp
+    )
+    target_link_libraries(project31_airport_scenario_benchmark PRIVATE project31_core)
+    if(WIN32)
+        target_link_libraries(project31_airport_scenario_benchmark PRIVATE Psapi)
+    endif()
+    target_compile_options(project31_airport_scenario_benchmark PRIVATE
         $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
     )
 endif()
