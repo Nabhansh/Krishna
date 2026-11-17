@@ -31,7 +31,7 @@ be started: the shell runner failed before command launch because its required
 connected. No application behavior or compiled implementation changed in that
 cleanup.
 
-## Milestone 2 — implementation complete, verification pending
+## Milestone 2 — complete and verified
 
 Implemented:
 
@@ -46,14 +46,35 @@ Implemented:
 - Complexity and design documentation for the implemented algorithms and
   indexes.
 
-The final CMake/GCC build and full test suite have not yet been run for
-Milestone 2. The verification command was attempted with the existing cached
-GoogleTest checkout, but the shell runner failed before launch because
-`slirp4netns` is unavailable; the VS Code task/test runners are disconnected in
-this session. No Milestone 2 test or benchmark result is claimed.
+Verified on Fedora with GCC 16.2.1 and CMake 4.3.0:
 
-## Deferred milestones
+- Release CMake configure and GCC build passed.
+- All 22 GoogleTests passed.
+- The sorting benchmark completed for 100, 5,000, and 50,000 passenger IDs.
+- Benchmark measurements are recorded in `BENCHMARK_REPORT.md`.
 
-Other mandatory algorithms, CSV ingestion, scheduling/optimization work, and
-comparative experimental results remain deferred. Benchmark timings are
-informational and no performance winner is asserted.
+## Batch A — implemented; verification blocked
+
+Implemented five independent divide-and-conquer algorithms with headers,
+sources, tests, and an example executable:
+
+- Maximum Subarray, Fast Exponentiation, Celebrity Problem,
+  Classical Matrix Multiplication, and Strassen Matrix Multiplication.
+- Added `project31_batch_a_example` and airport analytics/capacity mappings in
+  `docs/ALGORITHM_EXAMPLES.md`.
+- Added ten focused GoogleTests, including empty/invalid inputs, numerical
+  boundaries, rectangular products, and Strassen padding.
+
+CMake configuration passed. The first GCC build attempt could not compile
+either project or GoogleTest because GCC's standard-library include
+directories were unavailable to the compiler in the current environment
+(`fatal error: string/cstddef: No such file or directory`). This is an
+environment/toolchain-access failure, so Batch A is not verified. Batch B has
+not been started; the requested build/test gate must pass first.
+
+## Batch B — not started
+
+The six greedy algorithms have not yet been implemented.
+
+Dynamic programming and later categories remain deferred until Batches A and B
+are implemented and verified.

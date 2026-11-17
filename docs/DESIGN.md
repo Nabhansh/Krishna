@@ -65,6 +65,28 @@ lookups are expected O(1). The least-workloaded lane is still selected by a
 linear pass over lanes so ties remain deterministic by lane insertion order.
 The workload accumulator checks for 64-bit overflow.
 
+## Divide-and-conquer algorithms (Batch A)
+
+- Maximum Subarray returns a half-open range and sum using recursive split,
+  cross-boundary scan, and combine; it handles empty input and reports
+  unrepresentable signed sums.
+- Fast Exponentiation uses exponentiation by squaring, accepts signed 64-bit
+  exponents, and rejects non-finite inputs, zero to a negative exponent, and
+  floating-point overflow.
+- Celebrity Problem uses candidate elimination followed by verification;
+  relation matrices must be square and contain only zero/one values.
+- Classical matrix multiplication validates rectangular shape compatibility
+  and finite entries. It supports rectangular products.
+- Strassen matrix multiplication pads compatible rectangular inputs to a
+  power-of-two square, recursively evaluates seven products, and falls back
+  to classical multiplication at small subproblems.
+
+The maximum-subarray routine is intended for arrival-volume deviation series
+in a scenario/analytics layer. Fast exponentiation can model compounded
+capacity growth. Matrix operations and the celebrity relation solver are
+independent algorithm exercises and are not used to make passenger screening
+decisions.
+
 ## Queue policy and waiting time
 
 Every lane is FIFO. On arrival, the queue manager assigns the passenger to the

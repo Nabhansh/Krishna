@@ -19,6 +19,11 @@ passengers in one priority bucket.
 | Quick Sort | O(n log n) average; O(n^2) worst case | O(log n) stack |
 | Iterative Binary Search | O(log n) | O(1) |
 | Recursive Binary Search | O(log n) | O(log n) call stack |
+| Maximum Subarray (divide and conquer) | O(n log n) | O(log n) call stack |
+| Fast Exponentiation | O(log |e|) | O(1) |
+| Celebrity Problem | O(n) | O(1) |
+| Classical Matrix Multiplication | O(r c k) | O(r k) result |
+| Strassen Matrix Multiplication | O(n^log2(7)) padded square | O(n^2) |
 
 `R` denotes the number of priority buckets. Sorted ID insertion shifts O(P)
 elements; the insertion-point search itself is O(log P). Benchmark timings

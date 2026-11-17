@@ -63,7 +63,9 @@ TEST(AirportIndexTests, BinarySearchLookupAndPriorityQueriesUseRegisteredPasseng
     ASSERT_EQ(highestPriority.size(), 2U);
     EXPECT_EQ(highestPriority[0]->id(), "P-002");
     EXPECT_EQ(highestPriority[1]->id(), "P-019");
-    EXPECT_TRUE(airport.passengersByPriority(5).empty());
+    const std::vector<const Passenger*> noPriorityPassengers =
+        airport.passengersByPriority(5);
+    EXPECT_TRUE(noPriorityPassengers.empty());
 }
 
 TEST(QueueWorkloadIndexTests, TracksLaneWorkloadThroughArrivalAndScreening) {
