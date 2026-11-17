@@ -219,3 +219,60 @@ cmake --build build --target project31_string_matching_benchmark
 
 Datasets cover small, medium, large, and adversarial periodic text. A row is
 reported only if all four algorithms produce identical match positions.
+
+## Airport operating scenarios and staffing comparison
+
+Run the normal, constraint-shock, and large synthetic scenarios from the
+repository root:
+
+```sh
+./build/project31_airport_scenarios build/scenario-results
+```
+
+The runner loads `data/normal.csv` and `data/capacity_shock.csv`. The shock
+scenario keeps three staffed lanes/officers but makes Lane-1 unavailable from
+minute 3 through minute 12. The large-data scenario generates 50,000
+deterministic synthetic passengers and uses six lanes/officers; it is not
+real-world passenger data.
+
+Each scenario compares shortest-workload and round-robin assignment on the
+same arrivals and constraints, validates that every passenger is screened
+exactly once, and produces:
+
+- Per-passenger risk label, arrival, service start, completion, wait, lane, and
+  officer assignment.
+- Completion count, mean/maximum wait, throughput per simulated hour, and
+  lane utilization.
+- Strategy runtime and estimated result-storage bytes.
+- A one-extra-lane/officer staffing what-if.
+- `<scenario>.csv` and `<scenario>.json` exports with run IDs and benchmark
+  measurements.
+
+Run the strategy scalability comparison:
+
+```sh
+./build/project31_airport_scenario_benchmark
+```
+
+The benchmark uses identical deterministic generated data for each strategy:
+100, 5,000, and 50,000 passenger workloads plus 50,000 synchronized
+adversarial arrivals, plus a small assignment-divergence workload. Each
+strategy runs three times in a fresh worker process. It verifies repeatable
+full schedules, staffing/outage constraints, and passenger assignments and
+service intervals in an unmeasured isolated preflight before the three timed
+repetitions; timed results are validated against that preflight. It reports
+median/min-max runtime, service quality, and per-passenger schedule
+differences. On Linux, peak RSS is each isolated worker's
+`getrusage(RUSAGE_SELF).ru_maxrss` high-water mark in KiB. On Windows, the
+worker reports `GetProcessMemoryInfo` `PeakWorkingSetSize`, converted from
+bytes to KiB; this is peak resident working set, not Linux RSS. Estimated
+result-storage bytes remain a separate metric. Both measured high-water
+values include generated input and simulation storage, vary by host, and
+should be collected on the system used for any performance claim.
+
+Priority values 1, 2, and 3 are High, Elevated, and Standard. In scenario
+runs they determine dispatch priority, with configurable aging and stable
+arrival/input-order tie breaking. The manual CLI queue remains a separate FIFO
+workflow. Priority never allows a passenger to skip security screening. Lane
+and officer outages defer a service that would overlap the unavailable
+interval; they do not interrupt screening.

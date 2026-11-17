@@ -25,6 +25,7 @@
 #include "algorithms/string_matching/RabinKarp.hpp"
 #include "algorithms/string_matching/FiniteAutomatonStringMatching.hpp"
 #include "algorithms/string_matching/KnuthMorrisPratt.hpp"
+#include "simulator/AirportScenario.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -141,6 +142,13 @@ public:
     findFlightCodesInLogKnuthMorrisPratt(
         const std::string& log,
         const std::string& flightCode
+    );
+    [[nodiscard]] static ScenarioComparison compareAirportStrategies(
+        const AirportScenario& scenario
+    );
+    [[nodiscard]] static StaffingEvaluation recommendAirportStaffing(
+        const AirportScenario& scenario,
+        const StaffingEvaluationOptions& options
     );
 };
 

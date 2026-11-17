@@ -171,7 +171,7 @@ verified.
   Rabin-Karp, Finite Automaton, and KMP returned identical match positions.
 - `git diff --check` passed.
 - Current branch: `milestone-3-divide-greedy`.
-- Latest commit before this batch: `0f68ce6`.
+- Latest verified algorithm commit: `e33d343`.
 
 ## Chinese Remainder Theorem and initial string matching — intermediate batch verified
 
@@ -213,3 +213,137 @@ Successful Fedora host verification:
 Algorithm completion and verification establish the documented algorithm
 scope only; they do not by themselves prove that the entire expected airport
 simulator product is complete.
+
+## Airport product-level audit — initial implementation; early verification superseded
+
+The product audit is recorded in `reports/product_audit.md`. The initial
+product pass added a deterministic scenario simulator, CSV input, CSV/JSON
+result export, CLI scenario controls, two-strategy service comparisons,
+staffing what-if recommendations, a synthetic large-data scenario, and an
+airport workload benchmark. It also added product-level tests and product,
+complexity-class, reduction, demo, and release documentation.
+
+Verification during this audit:
+
+- Debug CMake configuration succeeded.
+- The pre-change CTest binary passed 140/140 before product changes.
+- The post-change build in that earlier run stopped during system-header
+  resolution, before project sources could be evaluated.
+- The pre-Phase-1 product suite passed 152/152 before additional scheduling
+  work; these results do not validate the current source.
+- The three airport scenarios, scenario benchmark, and generated CSV/JSON
+  outputs could not be executed or validated in this environment.
+- No new airport performance values are claimed. Estimated memory is result
+  storage, not peak process memory.
+- No commit or push was made.
+
+The audit's initial product build attempt did not verify those additions.
+Before Phase 1, the product test suite subsequently passed 152/152; that
+baseline still does not verify the current scheduling changes. The
+deterministic model does not include stochastic arrivals, staff shifts/breaks,
+interrupted screening, or production airport integrations. CMake
+install/package targets remain out of scope and are listed as a release
+decision in `docs/RELEASE_CHECKLIST.md`. The early build limitation above was
+superseded by the successful Phase 1-4 Fedora verification below.
+
+## Phase 1 — operational scheduling; Fedora host verified
+
+Implemented against the existing scenario and passenger models:
+
+- High, Elevated, and Standard scenario dispatch priority, with stable
+  arrival/input-sequence tie breaking and a configurable aging interval
+  (default 15 minutes). Aging promotes one category per interval and is capped
+  at High; every passenger still receives mandatory screening.
+- A timestamped priority-queue simulation for arrivals, completions, aging,
+  and lane/officer outage boundaries. Same-time ordering is completion,
+  resource reopening, resource closure, aging, arrival, then dispatch.
+- Optional passenger lane eligibility, officer outages, whole-service outage
+  deferral, and checks for exact-once completion and non-overlapping service.
+- A staffing evaluation API and CLI flow that run multiple lane/officer
+  configurations, check service targets and a configurable resource budget,
+  and select the lowest-cost feasible candidate. The existing one-extra-pair
+  comparison remains available.
+- Focused scheduling, starvation, outage, eligibility, staffing, and
+  regression tests, plus updated design, user, algorithm, complexity, demo,
+  and audit documentation.
+
+Host verification reported for Phase 1:
+
+- Debug build succeeded on Fedora with GCC 16.2.1.
+- CTest passed, 171/171.
+- Normal, capacity-shock, and 50,000-passenger stress scenarios completed.
+- The scenario benchmark completed for small, medium, large, and
+  adversarial-burst workloads.
+- Three CSV and three JSON exports parsed and matched their run summaries.
+
+## Phase 2 — independent QA and benchmarking; host baseline verified
+
+Implemented:
+
+- Added the public `AirportScenarioRunner::runStrategy` entry point so isolated
+  benchmark workers run one strategy through the same validated simulator.
+- Added a minute-step reference simulator in integration tests. It uses
+  independent vectors and direct time progression to compare deterministic
+  generated small cases against both production strategies, including
+  eligibility, aging, lane outages, and officer outages.
+- Added CSV tests for empty/header-only files, missing/reordered columns,
+  invalid values, duplicate IDs, large integers, and overflow boundaries;
+  added JSON control-character escaping, exported-row/result consistency, and
+  regression coverage for preserving a trailing empty CSV field.
+- Reworked the airport benchmark to use three fresh `exec` workers per
+  strategy/dataset, report median/range simulation time and Linux
+  `getrusage(RUSAGE_SELF).ru_maxrss` in KiB, and keep estimated
+  result-storage bytes separate.
+- Added an assignment-divergence workload and comparisons of per-passenger
+  lane assignments and service intervals. Benchmark documentation now
+  describes isolation, repetitions, RSS limitations, and reproducibility.
+- Corrected the benchmark worker failure diagnostic to use the existing
+  `toString(strategy)` formatter instead of an undefined local name.
+- Reworked the test CSV row splitter to parse delimiters while respecting
+  quoted and escaped fields, and to retain the final empty field explicitly.
+
+The supplied Fedora host baseline reports a successful full build, 179/179
+CTest tests, benchmark execution with three isolated repetitions and actual
+peak RSS, and successful normal, capacity-shock, and 50,000-passenger scenario
+exports. It also reports consistent 41-column CSV rows and parseable JSON.
+
+## Phases 3-4 — final pre-release verification; Fedora verified
+
+Latest Fedora verification:
+
+- Fresh Debug and Release configurations and full builds passed.
+- CTest passed 179/179 in both Debug and Release.
+- The Release benchmark correctness preflight passed for both strategies on
+  all five datasets. The benchmark uses three isolated measured repetitions
+  per strategy/dataset, reports median and min/max runtime, per-worker Linux
+  peak RSS, and estimated result-storage bytes separately.
+- Different passenger-to-lane assignments occurred in some workloads, but
+  service-interval differences were zero and aggregate wait/throughput
+  matched. Runtime alone does not establish operational superiority.
+- Normal, capacity-shock, and 50,000-passenger scenarios completed; their CSV
+  rows had consistent 41-column widths and their JSON exports parsed.
+- Documented CLI scenario, CSV loading, export, and invalid-input workflows
+  completed successfully. `git diff --check` passed.
+
+The deterministic fixed-duration model still excludes stochastic arrivals,
+staff shifts/breaks, interrupted service, and live airport integrations.
+CMake install/package targets are not present and remain a separate release
+decision. No commit, tag, or push is claimed by this status entry.
+
+## Final delivery and cross-platform verification — in progress
+
+- Added the 34-entry algorithm ownership inventory and the requirements
+  traceability matrix. Student owner names remain pending because none were
+  supplied or recorded in the repository.
+- Added Windows MSVC CI and a Windows benchmark worker using
+  `CreateProcess` and `GetProcessMemoryInfo`; Linux retains isolated POSIX
+  workers and `getrusage(RUSAGE_SELF).ru_maxrss`.
+- Added a reusable CSV/JSON scenario-export validator and documented exact
+  Linux and PowerShell commands for the normal, capacity-shock, and
+  50,000-passenger demonstrations.
+- Fresh out-of-tree Debug and Release CMake configuration succeeded locally.
+  Both builds stopped before compiling project code because the sandbox host
+  is missing `/usr/include/features-time64.h`. No system headers or packages
+  were modified. This environment has not yet verified the current source.
+- The new Ubuntu and Windows MSVC CI workflow must pass before this delivery
+  can be described as cross-platform verified or tagged for release.

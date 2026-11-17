@@ -199,4 +199,17 @@ AirportOperations::findFlightCodesInLogKnuthMorrisPratt(
     return algorithms::knuthMorrisPrattStringMatch(log, flightCode);
 }
 
+ScenarioComparison AirportOperations::compareAirportStrategies(
+    const AirportScenario& scenario
+) {
+    return AirportScenarioRunner::compareStrategies(scenario);
+}
+
+StaffingEvaluation AirportOperations::recommendAirportStaffing(
+    const AirportScenario& scenario,
+    const StaffingEvaluationOptions& options
+) {
+    return AirportScenarioRunner::evaluateStaffing(scenario, options);
+}
+
 } // namespace project31

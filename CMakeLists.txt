@@ -49,6 +49,7 @@ add_library(project31_core
     src/algorithms/StrassenMatrixMultiplication.cpp
     src/algorithms/SubsetSum.cpp
     src/simulator/QueueManager.cpp
+    src/simulator/AirportScenario.cpp
     src/simulator/AirportOperations.cpp
     src/simulator/QueueWorkloadIndex.cpp
 )
@@ -118,7 +119,9 @@ if(BUILD_TESTING)
     endif()
 
     add_executable(project31_tests
+        src/simulator/CommandLineInterface.cpp
         tests/unit/passenger_tests.cpp
+        tests/unit/airport_scheduling_tests.cpp
         tests/unit/sorting_tests.cpp
         tests/unit/searching_tests.cpp
         tests/unit/index_tests.cpp
@@ -138,13 +141,19 @@ if(BUILD_TESTING)
         tests/integration/airport_tests.cpp
         tests/integration/flow_operations_tests.cpp
         tests/integration/number_theory_string_matching_tests.cpp
+        tests/integration/airport_scenario_tests.cpp
+        tests/integration/airport_scheduling_tests.cpp
+        tests/regression/airport_scenario_regression_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
     target_compile_options(project31_tests PRIVATE
         $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
     )
     include(GoogleTest)
-    gtest_discover_tests(project31_tests)
+    gtest_discover_tests(
+        project31_tests
+        PROPERTIES WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
 endif()
 
 add_executable(project31_batch_a_example examples/batch_a_example.cpp)
@@ -195,6 +204,12 @@ target_compile_options(branch_bound_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 
+add_executable(project31_airport_scenarios examples/airport_scenarios.cpp)
+target_link_libraries(project31_airport_scenarios PRIVATE project31_core)
+target_compile_options(project31_airport_scenarios PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
 option(PROJECT31_BUILD_BENCHMARKS "Build sorting performance benchmarks" ON)
 if(PROJECT31_BUILD_BENCHMARKS)
     add_executable(project31_sorting_benchmark benchmarks/sorting_benchmark.cpp)
@@ -207,6 +222,17 @@ if(PROJECT31_BUILD_BENCHMARKS)
     )
     target_link_libraries(project31_string_matching_benchmark PRIVATE project31_core)
     target_compile_options(project31_string_matching_benchmark PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+    )
+    add_executable(
+        project31_airport_scenario_benchmark
+        benchmarks/airport_scenario_benchmark.cpp
+    )
+    target_link_libraries(project31_airport_scenario_benchmark PRIVATE project31_core)
+    if(WIN32)
+        target_link_libraries(project31_airport_scenario_benchmark PRIVATE Psapi)
+    endif()
+    target_compile_options(project31_airport_scenario_benchmark PRIVATE
         $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
     )
 endif()

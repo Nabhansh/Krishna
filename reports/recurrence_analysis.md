@@ -349,3 +349,50 @@ The prefix construction takes `O(m)` time, scanning takes `O(n)` time, and
 the LPS array takes `O(m)` space. Both operations interpret bytes as unsigned
 values for indexing/comparison and use the same all-boundaries convention for
 an empty pattern as the other string matchers.
+
+## Airport scenario event simulation and scheduling
+
+The scenario simulator is event-driven rather than a next-free-clock
+calculation. For passenger `i`, let `A_i` be arrival time, `D_i` the fixed
+screening duration, `R_i` the base risk rank (High 0, Elevated 1, Standard 2),
+and `q` the positive aging interval. While waiting, effective rank is:
+
+```text
+E_i(t) = max(0, R_i - floor((t - A_i) / q))
+```
+
+Each passenger arrival, screening completion, aging promotion, and each
+resource outage boundary is stored in a min-priority event queue ordered by
+`(timestamp, precedence, insertion sequence)`. At equal timestamps, the
+precedence is completion, resource reopening, resource closure, aging, then
+arrival. Dispatch happens after all same-time events have been applied.
+Arrivals therefore enter the waiting sets as a batch before the scheduler
+chooses the next passenger.
+
+At dispatch, the simulator considers only passengers with at least one
+eligible, available lane/officer pair whose full service duration does not
+overlap an outage. It selects the lowest effective rank, then earlier arrival
+and stable input sequence. The selected lane is chosen by either shortest
+cumulative assigned workload or the round-robin cursor. The service interval
+is `[S_i, S_i + D_i)`, and its completion event marks the passenger Screened
+exactly once. A service may end at an outage's start but may not overlap the
+half-open outage interval; it is never preempted.
+
+For `N` passengers, `L` staffed lane/officer pairs, `K` resource outage
+intervals, and `E` eligible passenger-lane pairs, the event count is
+`O(N + K)`: each passenger has one arrival and completion and at most two
+aging promotions; each outage has a start and end. Event insertion/removal
+costs `O((N+K) log(N+K))`. Waiting-set insertion, promotion, and removal costs
+`O((E+NL) log N)` in the worst case, with `E <= NL`. Dispatch scans up to
+`N` waiting entries on each of `L` lanes for each passenger start; outage
+feasibility checks can rescan `K` intervals over as many as `K` candidate
+starts. A conservative total is `O(N^2 L K^2 + NL log N + (N+K) log(N+K))`;
+without outages, the dispatch bound is `O(N^2 L)`. This is a conservative
+implementation bound, not a claim that typical cases attain it.
+
+The simulator stores at most `O(NL)` eligibility/waiting references,
+`O(N+K)` events, and `O(N+L+K)` passenger, result, lane, and outage records.
+The benchmark's memory number estimates returned result storage only, not
+peak process memory. A strategy comparison retains three results (shortest
+workload, round-robin, and the existing one-extra-lane what-if). Staffing
+evaluation retains one result per candidate configuration.

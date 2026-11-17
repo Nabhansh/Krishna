@@ -5,6 +5,23 @@ are used as substitutes. Graph algorithms use standard containers for
 representation, while Kruskal uses a separately implemented DSU and hand-coded
 merge sort for edge ordering.
 
+## Sorting and searching
+
+| Algorithm | Time | Auxiliary space |
+|---|---:|---:|
+| Merge Sort | O(n log n), worst case | O(n) |
+| Quick Sort | O(n log n) average; O(n^2) worst case | O(log n) stack |
+| Iterative Binary Search | O(log n) | O(1) |
+| Recursive Binary Search | O(log n) | O(log n) call stack |
+
+Merge Sort uses one reusable output buffer and chooses the left item on equal
+keys, so it is stable. Quick Sort uses median-of-three selection,
+three-way partitioning, and recursively processes the smaller partition;
+its stack remains logarithmic even when partition sizes are unbalanced. Both
+binary-search variants return the first matching position and require sorted
+input. The passenger indexes use hand-written binary search/lower-bound logic;
+they do not call STL sorting or searching algorithms.
+
 ## Greedy algorithms
 
 | Algorithm | Airport use | Time | Auxiliary space |
@@ -180,7 +197,7 @@ while their exploration order may produce different valid optimal selections.
 | Maximum Subarray | O(n log n) | O(log n) call stack |
 | Fast Exponentiation | O(log |e|) | O(1) |
 | Celebrity Problem | O(n) | O(1) |
-| Classical Matrix Multiplication | O(rck) | O(rk) output |
+| Classical Matrix Multiplication | O(rck) | O(rc) output |
 | Strassen Matrix Multiplication | O(n^log2(7)) padded square | O(n^2) |
 
 Maximum Subarray combines optimal left, right, and crossing ranges. Fast
@@ -235,6 +252,48 @@ Its keys must be strictly increasing, probability arrays must have `n` and
 `n+1` entries, and all supplied probabilities must be finite values in `[0,1]`.
 The supplied probabilities must sum to one within a small floating-point
 tolerance.
+
+## Airport scenario simulation
+
+`AirportScenarioRunner` accepts passenger records from the documented CSV
+schema or a deterministic synthetic generator. Records are stably ordered by
+arrival time and validated for unique IDs,
+nonblank names, nonnegative arrival, positive fixed service duration, and
+priority 1-3. Priority 1/2/3 maps to High/Elevated/Standard. The event-driven
+scenario dispatcher selects the highest effective priority that can use an
+available eligible lane, then breaks ties by arrival and stable input order.
+Waiting passengers age one category per configured interval, capped at High.
+Both lane-assignment strategies use this same dispatch policy, and every
+passenger is screened. The separate manual CLI queue retains its FIFO behavior.
+
+The timestamped event queue processes completions, resource re-openings,
+resource closures, aging, and arrivals in that precedence order; dispatch runs
+after all events at a timestamp. Each lane is paired with one officer. Lane
+and officer outage intervals are half-open, and a service is delayed unless
+its full duration fits outside both outages. Optional CSV eligibility lists
+can restrict which lanes serve a passenger. Staffing is capped at 128
+lane/officer pairs.
+
+The runner reports each passenger's arrival, service start, completion, wait,
+lane, and officer. Mean wait is total wait divided by passenger count;
+throughput is completions per elapsed simulated hour from first arrival to
+last completion; utilization is busy minutes over staffed, non-outage minutes.
+It compares both policies on identical inputs and validates coverage and
+resource constraints before exposing the results. A separate what-if with one
+additional lane and officer supports staffing sensitivity analysis.
+Configurable staffing evaluation simulates multiple lane/officer counts and
+recommends the lowest-cost candidate meeting specified wait, throughput, and
+budget targets, or reports that no candidate is feasible.
+
+The airport scenario benchmark reports measured simulation runtime and these
+service indicators for small, medium, large, and synchronized-burst synthetic
+inputs. An unmeasured correctness preflight validates both strategies before
+timed repetitions. In tested workloads, different lane assignments did not
+change service intervals or aggregate wait/throughput; runtime alone does not
+establish operational superiority. Its memory field estimates retained
+result-object/string storage and does not represent process peak memory.
+Detailed bounds and limitations are in `reports/complexity_report.md` and
+`docs/DESIGN.md`.
 
 ## Airport application and safety
 

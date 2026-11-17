@@ -1,0 +1,61 @@
+name: CMake CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Configure Debug
+        run: cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
+      - name: Build Debug
+        run: cmake --build build-debug --parallel 4
+      - name: Test Debug
+        run: ctest --test-dir build-debug --output-on-failure
+      - name: Configure Release
+        run: cmake -S . -B build-release -DCMAKE_BUILD_TYPE=Release
+      - name: Build Release
+        run: cmake --build build-release --parallel 4
+      - name: Test Release
+        run: ctest --test-dir build-release --output-on-failure
+      - name: Run and validate scenarios
+        run: |
+          ./build-release/project31_airport_scenarios build-release/scenario-results
+          python tools/validate_scenario_exports.py build-release/scenario-results
+      - name: Run airport benchmark
+        run: ./build-release/project31_airport_scenario_benchmark
+
+  windows-msvc:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Configure Debug with MSVC
+        run: cmake -S . -B build-debug -A x64 -DCMAKE_CONFIGURATION_TYPES=Debug
+      - name: Build Debug
+        run: cmake --build build-debug --config Debug --parallel 4
+      - name: Test Debug
+        run: ctest --test-dir build-debug -C Debug --output-on-failure
+      - name: Configure Release with MSVC
+        run: cmake -S . -B build-release -A x64 -DCMAKE_CONFIGURATION_TYPES=Release
+      - name: Build Release
+        run: cmake --build build-release --config Release --parallel 4
+      - name: Test Release
+        run: ctest --test-dir build-release -C Release --output-on-failure
+      - name: Run and validate scenarios
+        run: |
+          .\build-release\Release\project31_airport_scenarios.exe build-release\scenario-results
+          python tools\validate_scenario_exports.py build-release\scenario-results
+      - name: Run airport benchmark
+        run: .\build-release\Release\project31_airport_scenario_benchmark.exe
