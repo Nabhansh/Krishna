@@ -25,8 +25,10 @@ add_library(project31_core
     src/algorithms/IntervalPartitioning.cpp
     src/algorithms/Knapsack.cpp
     src/algorithms/Kruskal.cpp
+    src/algorithms/LongestCommonSubsequence.cpp
     src/algorithms/MatrixChainMultiplication.cpp
     src/algorithms/MaximumSubarray.cpp
+    src/algorithms/OptimalBinarySearchTree.cpp
     src/algorithms/MergeSort.cpp
     src/algorithms/Prim.cpp
     src/algorithms/QuickSort.cpp
@@ -68,6 +70,7 @@ if(BUILD_TESTING)
         tests/unit/divide_conquer_tests.cpp
         tests/unit/greedy_tests.cpp
         tests/unit/dynamic_programming_tests.cpp
+        tests/unit/dynamic_programming_batch2_tests.cpp
         tests/integration/airport_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
@@ -95,6 +98,14 @@ add_executable(project31_dynamic_programming_example
 )
 target_link_libraries(project31_dynamic_programming_example PRIVATE project31_core)
 target_compile_options(project31_dynamic_programming_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(project31_dynamic_programming_batch2_example
+    examples/dynamic_programming_batch2_example.cpp
+)
+target_link_libraries(project31_dynamic_programming_batch2_example PRIVATE project31_core)
+target_compile_options(project31_dynamic_programming_batch2_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 

@@ -56,4 +56,23 @@ algorithms::MatrixChainResult AirportOperations::planAnalyticsMultiplication(
     return algorithms::matrixChainMultiplication(matrixDimensions);
 }
 
+algorithms::LongestCommonSubsequenceResult AirportOperations::compareOperationalEventHistories(
+    const std::string& firstHistory,
+    const std::string& secondHistory
+) {
+    return algorithms::longestCommonSubsequence(firstHistory, secondHistory);
+}
+
+algorithms::OptimalBinarySearchTreeResult AirportOperations::buildOperationalLookupTree(
+    const std::vector<std::string>& sortedUniqueKeys,
+    const std::vector<double>& successfulProbabilities,
+    const std::vector<double>& unsuccessfulProbabilities
+) {
+    return algorithms::optimalBinarySearchTree(
+        sortedUniqueKeys,
+        successfulProbabilities,
+        unsuccessfulProbabilities
+    );
+}
+
 } // namespace project31

@@ -7,7 +7,9 @@
 #include "algorithms/greedy/Kruskal.hpp"
 #include "algorithms/greedy/Prim.hpp"
 #include "algorithms/dynamic_programming/Knapsack.hpp"
+#include "algorithms/dynamic_programming/LongestCommonSubsequence.hpp"
 #include "algorithms/dynamic_programming/MatrixChainMultiplication.hpp"
+#include "algorithms/dynamic_programming/OptimalBinarySearchTree.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -47,6 +49,15 @@ public:
     );
     [[nodiscard]] static algorithms::MatrixChainResult planAnalyticsMultiplication(
         const std::vector<std::int64_t>& matrixDimensions
+    );
+    [[nodiscard]] static algorithms::LongestCommonSubsequenceResult compareOperationalEventHistories(
+        const std::string& firstHistory,
+        const std::string& secondHistory
+    );
+    [[nodiscard]] static algorithms::OptimalBinarySearchTreeResult buildOperationalLookupTree(
+        const std::vector<std::string>& sortedUniqueKeys,
+        const std::vector<double>& successfulProbabilities,
+        const std::vector<double>& unsuccessfulProbabilities
     );
 };
 

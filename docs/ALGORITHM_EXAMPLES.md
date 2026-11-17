@@ -47,3 +47,18 @@ This demonstration chooses airport equipment upgrades under a fixed resource
 budget with 0/1 Knapsack and selects the least-cost multiplication order for
 an operational analytics matrix pipeline. The selected upgrades are planning
 recommendations; they do not affect passenger screening requirements.
+
+## Dynamic-programming batch 2
+
+```sh
+cmake --build build --target project31_dynamic_programming_batch2_example
+./build/project31_dynamic_programming_batch2_example
+```
+
+This example finds a common subsequence between two security event histories
+and constructs an optimal lookup tree for frequently accessed operational
+record keys. The LCS operates on the input strings' characters. OBST keys
+must be supplied in strictly increasing order; successful probabilities have
+one value per key and unsuccessful probabilities have one extra boundary
+value. Each probability must be finite and in `[0,1]`; callers provide
+values whose total is one (within floating-point tolerance).

@@ -66,6 +66,8 @@ uses classical multiplication for small subproblems.
 |---|---|---:|---:|
 | 0/1 Knapsack | Choose operational equipment upgrades within a fixed budget | O(nW) | O(nW) |
 | Matrix Chain Multiplication | Minimize scalar operations in an analytics matrix pipeline | O(n^3) | O(n^2) |
+| Longest Common Subsequence | Compare event and passenger-processing histories | O(mn) | O(mn) |
+| Optimal Binary Search Tree | Arrange operational record lookups by access probability | O(n^3) | O(n^2) |
 
 For Knapsack, `n` is the item count and `W` is the integer capacity. The DP
 table stores the best value using the first `i` items at capacity `c`; a
@@ -84,12 +86,22 @@ The airport facade exposes the Knapsack choice as budgeted upgrade planning
 and Matrix Chain as analytics-pipeline ordering. These outputs inform resource
 planning only and do not alter mandatory passenger screening.
 
+The LCS implementation stores a full prefix table and reconstructs one
+longest common sequence; tied choices may yield any valid optimum. OBST uses
+successful and unsuccessful search probabilities to minimize expected
+comparison depth, stores chosen roots, and reconstructs a key-bearing tree.
+Its keys must be strictly increasing, probability arrays must have `n` and
+`n+1` entries, and all supplied probabilities must be finite values in `[0,1]`.
+The supplied probabilities must sum to one within a small floating-point
+tolerance.
+
 ## Airport application and safety
 
 `AirportOperations` is the simulator-facing planning/compression facade.
 Its examples show appointment selection, lane allocation, route planning,
 infrastructure planning by both MST methods, event-log compression, budgeted
-upgrade selection, and analytics matrix-chain ordering.
+upgrade selection, analytics matrix-chain ordering, history comparison, and
+frequency-weighted record lookup.
 Planning priority and route cost do not bypass screening: screening policy is
 outside these algorithms and remains mandatory for every passenger.
 
