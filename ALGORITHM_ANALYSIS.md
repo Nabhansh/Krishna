@@ -57,6 +57,21 @@ when it is reachable from the selected source. Floyd-Warshall stores a
 next-hop matrix and rejects any negative cycle. Unreachable pairs are
 represented by empty optionals; path accessors return no path for those pairs.
 
+## Backtracking
+
+| Algorithm | Airport use | Worst-case time | Auxiliary space |
+|---|---|---:|---:|
+| N-Queens | Enumerate non-attacking screening-position layouts | O(N!) | O(N) per search path, plus all returned solutions |
+| Subset Sum | Select resource packages totaling an exact capacity | O(2^n) | O(n) recursion/result path |
+
+N-Queens places one queen per row and backtracks over unoccupied columns and
+diagonals. It returns every board, so output memory is necessarily
+proportional to the number and size of solutions. Enumeration is capped at
+N=12 to bound runtime and memory; N=0 is invalid. Subset Sum explores inclusion
+and exclusion choices, pruning any selected value larger than the remaining
+target. Nonnegative inputs enable this pruning and the capped total check
+avoids overflow when quickly rejecting unreachable targets.
+
 ## Divide and conquer algorithms
 
 | Algorithm | Time | Auxiliary space |

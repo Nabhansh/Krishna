@@ -90,4 +90,17 @@ algorithms::FloydWarshallResult AirportOperations::planAllAirportRoutesWithFloyd
     return algorithms::floydWarshallShortestPaths(airportCount, routes);
 }
 
+std::vector<std::vector<std::size_t>> AirportOperations::assignScreeningPositions(
+    std::size_t positionCount
+) {
+    return algorithms::solveNQueens(positionCount);
+}
+
+std::optional<std::vector<std::size_t>> AirportOperations::selectResourcePackages(
+    const std::vector<std::int64_t>& packageCapacities,
+    std::int64_t targetCapacity
+) {
+    return algorithms::findSubsetSum(packageCapacities, targetCapacity);
+}
+
 } // namespace project31

@@ -12,6 +12,8 @@
 #include "algorithms/dynamic_programming/OptimalBinarySearchTree.hpp"
 #include "algorithms/graph/BellmanFord.hpp"
 #include "algorithms/graph/FloydWarshall.hpp"
+#include "algorithms/backtracking/NQueens.hpp"
+#include "algorithms/backtracking/SubsetSum.hpp"
 
 #include <cstdint>
 #include <optional>
@@ -69,6 +71,13 @@ public:
     [[nodiscard]] static algorithms::FloydWarshallResult planAllAirportRoutesWithFloydWarshall(
         std::size_t airportCount,
         const std::vector<algorithms::DirectedWeightedEdge>& routes
+    );
+    [[nodiscard]] static std::vector<std::vector<std::size_t>> assignScreeningPositions(
+        std::size_t positionCount
+    );
+    [[nodiscard]] static std::optional<std::vector<std::size_t>> selectResourcePackages(
+        const std::vector<std::int64_t>& packageCapacities,
+        std::int64_t targetCapacity
     );
 };
 

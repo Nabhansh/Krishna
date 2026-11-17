@@ -76,3 +76,16 @@ edge is a net operational cost adjustment, not negative travel time. Both
 algorithms return route reconstruction data; Bellman-Ford rejects a negative
 cycle reachable from its source, while Floyd-Warshall rejects any negative
 cycle in the graph.
+
+## Backtracking airport planning
+
+```sh
+cmake --build build --target backtracking_example
+./build/backtracking_example
+```
+
+The example enumerates non-attacking screening-position layouts on a 4-by-4
+board and selects resource-package indices whose capacities total exactly 10.
+N-Queens enumerates all solutions and accepts board sizes only from 1 through
+12. Subset Sum supports nonnegative package capacities and returns one set of
+original input indices, or reports that no exact combination exists.

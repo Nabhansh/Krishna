@@ -103,3 +103,30 @@ and `O(V^2)` space. A negative diagonal entry after the iterations identifies
 a negative cycle. The parallel next-hop matrix supports route reconstruction.
 Both shortest-path implementations guard signed distance addition against
 overflow.
+
+## N-Queens
+
+Let `Q(r, C, D1, D2)` enumerate valid placements from row `r` given occupied
+columns and diagonals. At each row, each column not in the occupied sets is
+tried; the recursive call advances to `r+1`, and the placement is undone on
+return. A solution is emitted at `r=N`. The search tree has at most
+`N * (N-1) * ... * 1 = N!` leaves and uses `O(N)` working space, exclusive of
+the returned solutions. The implementation caps `N` at 12 because it
+enumerates and retains every board.
+
+## Subset Sum
+
+For position `i` and remaining target `t`, backtracking tries:
+
+```text
+S(i, t) = S(i+1, t - a[i]) or S(i+1, t), if a[i] <= t
+S(i, 0) = true
+S(n, t) = false, for t > 0
+```
+
+Nonnegative values permit skipping a value larger than the remaining target.
+The search stops on the first solution and carries original indices along the
+include branch. In the worst case, inclusion/exclusion visits `O(2^n)` states
+with `O(n)` recursive stack and selected-index storage. A preliminary sum
+check is capped at the target, so the feasibility check itself cannot
+overflow.

@@ -30,11 +30,13 @@ add_library(project31_core
     src/algorithms/LongestCommonSubsequence.cpp
     src/algorithms/MatrixChainMultiplication.cpp
     src/algorithms/MaximumSubarray.cpp
+    src/algorithms/NQueens.cpp
     src/algorithms/OptimalBinarySearchTree.cpp
     src/algorithms/MergeSort.cpp
     src/algorithms/Prim.cpp
     src/algorithms/QuickSort.cpp
     src/algorithms/StrassenMatrixMultiplication.cpp
+    src/algorithms/SubsetSum.cpp
     src/simulator/QueueManager.cpp
     src/simulator/AirportOperations.cpp
     src/simulator/QueueWorkloadIndex.cpp
@@ -74,6 +76,7 @@ if(BUILD_TESTING)
         tests/unit/dynamic_programming_tests.cpp
         tests/unit/dynamic_programming_batch2_tests.cpp
         tests/unit/graph_algorithms_tests.cpp
+        tests/unit/backtracking_tests.cpp
         tests/integration/airport_tests.cpp
     )
     target_link_libraries(project31_tests PRIVATE project31_core GTest::gtest_main)
@@ -117,6 +120,12 @@ add_executable(project31_graph_algorithms_example
 )
 target_link_libraries(project31_graph_algorithms_example PRIVATE project31_core)
 target_compile_options(project31_graph_algorithms_example PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
+)
+
+add_executable(backtracking_example examples/backtracking_example.cpp)
+target_link_libraries(backtracking_example PRIVATE project31_core)
+target_compile_options(backtracking_example PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wall;-Wextra;-Wpedantic>
 )
 

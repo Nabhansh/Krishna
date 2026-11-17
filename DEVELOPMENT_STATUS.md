@@ -115,3 +115,31 @@ Verified baseline at commit `ddd1d1b`:
 - 19 of 34 algorithms implemented and verified.
 - All 62 GoogleTests passed.
 - Both dynamic-programming examples ran successfully.
+
+## Graph shortest paths — complete and verified
+
+Implemented Bellman-Ford and Floyd-Warshall with negative-weight support,
+negative-cycle detection, checked distance arithmetic, path reconstruction,
+airport route-planning APIs, cross-check tests, and an airport example.
+
+Verified baseline at commit `f707b69`:
+
+- 21 of 34 algorithms implemented and verified.
+- All 72 GoogleTests passed.
+
+## Backtracking — implementation added; verification blocked
+
+Added N-Queens enumeration and Subset Sum search, their AirportOperations
+entry points, eight focused GoogleTests, `backtracking_example`, and
+complexity/recurrence/airport-use documentation.
+
+Verification attempt:
+
+- Debug CMake configuration succeeded.
+- The clean build failed before project sources compiled because GCC 16's
+  configured system headers reference unavailable `bits/wordsize.h`.
+- CTest could not run because the clean build did not produce the test binary;
+  the example executable is likewise unavailable.
+- The 21/34 algorithms and 72/72 passing tests above remain the latest
+  verified baseline. Backtracking implementations and eight new tests are
+  authored but unverified; no commit or push was made.
